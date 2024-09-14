@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  <title>Login</title>
+{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'css/login/styles.css' %}">
+  <style>
+    body {
+      background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+      color: #fff;
+    }
+    .login-container {
+      min-height: 80vh;
+    }
+    .login-card {
+      background-color: #fff;
+      color: #212529;
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+    }
+    .login-title {
+      font-size: 1.75rem;
+      color: #6e8efb;
+    }
+    .alert-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border-color: #bee5eb;
+    }
+    .btn-primary {
+      background-color: #6e8efb;
+      border-color: #6e8efb;
+    }
+    .btn-primary:hover {
+      background-color: #5a7bf0;
+      border-color: #5a7bf0;
+    }
+    .btn-secondary {
+      background-color: #e2e6ea;
+      color: #495057;
+      border-color: #dae0e5;
+    }
+    .btn-secondary:hover {
+      background-color: #d6d9db;
+      color: #383d41;
+      border-color: #c6c8ca;
+    }
+    .form-label i, .login-title i {
+      margin-right: 0.5rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container d-flex justify-content-center align-items-center">
+  <div class="login-card shadow-lg rounded-4">
+    <h1 class="login-title mb-4">Login</h1>
+    {% if messages %}
+    <div class="alert alert-info mb-4">
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}" class="login-form">
+      {% csrf_token %}
+      <div class="form-group mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+      <div class="form-group mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+      <a href="{% url 'register' %}" class="btn btn-secondary w-100">Register</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
