@@ -10,7 +10,7 @@
     {% endblock %}
     
     {% block style %}
-    <link rel="stylesheet" href="{% static 'css/base/styles.css' %}">
+    
     {% endblock %}
     
     <!-- Bootstrap 5 CDN -->
@@ -42,7 +42,7 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
         .container {
-            max-width: 960px;
+            max-width: auto;
         }
         .content-wrapper {
             margin-top: 5rem;
@@ -58,6 +58,17 @@
         }
         .navbar-toggler {
             margin-left: auto;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .navbar-brand img {
+                width: 40px;
+                height: 40px;
+            }
+            .content-wrapper {
+                margin-top: 3rem;
+                margin-bottom: 3rem;
+            }
         }
     </style>
 </head>
@@ -76,12 +87,12 @@
                             <a class="nav-link" href="{% url 'index' %}">Home</a>
                         </li>
                         {% if user.is_authenticated %}
-                            <li class="nav-item">
+                            <!--<li class="nav-item">
                                 <a class="nav-link" href="{% url 'bet' %}">Bet</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'bet_history' %}">History</a>
-                            </li>
+                            </li>-->
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'profile' %}">Account {{ user.username }}</a>
                             </li>

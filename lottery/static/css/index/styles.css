@@ -1,33 +1,61 @@
-body {
-    font-family: 'Prompt', sans-serif;
+/* Updated CSS for cards in index.html */
+.hero {
+    background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+    color: #fff;
+    padding: 5rem 0;
+    text-align: center;
+}
+.hero h1, .hero p {
+    color: #fff;
 }
 
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-}
-
+/* Card styling */
 .card {
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    max-width: 100%; /* Ensure cards don't overflow their container */
+    border-radius: 0.5rem; /* Optional: rounded corners */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    width: auto;
+    height: auto; /* Set a fixed height for the cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out the content */
+}
+
+.card-content {
+    padding: 1rem;
+    flex-grow: 1; /* Ensure this section takes up remaining space */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
     background-color: #f8f9fa;
+    color: #212529;
 }
 
-.user-info {
+.card img {
+    max-width: 100%;
+    height: auto; /* Ensure images scale correctly */
+    border-radius: 0.5rem; /* Optional: rounded corners for images */
+}
+
+.btn-light {
+    background-color: #fff;
+    color: #212529;
+}
+.btn-light:hover {
+    background-color: #e2e6ea;
+    color: #212529;
+}
+
+hr {
+    border: 0;
     border-top: 1px solid #ddd;
-}
-
-.nav-link {
-    font-size: 1.1rem;
-}
-
-.nav-link:hover {
-    background-color: #f1f1f1;
-    border-radius: 5px;
+    margin: 2rem 0;
 }

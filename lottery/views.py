@@ -1,11 +1,35 @@
-#lottery\views.py
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.views import View
-from django.shortcuts import render
-from .models import Bet
-from .models import Lottery, LotteryType
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Bet, Lottery, LotteryType
+from django.views.generic import TemplateView
+from datetime import datetime
+import pytz
 
+class LotteryDetailView(TemplateView):
+    template_name = 'bet_detail.html'  # Updated to match your template name
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lottery_id = self.kwargs.get('pk')
+        lottery = get_object_or_404(Lottery, pk=lottery_id)
+        
+        # Get the current time in Bangkok timezone
+        bangkok_tz = pytz.timezone('Asia/Bangkok')
+        now = datetime.now(bangkok_tz)
+        thai_months = [
+            'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+            'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+        ]
+        formatted_date = f"{now.day} {thai_months[now.month - 1]} {now.year + 543}"  # Format as Thai date
+
+        context['lottery'] = lottery
+        context['lottery_name'] = lottery.name
+        context['draw_date'] = formatted_date
+        context['total_amount'] = '0฿'  # Replace with actual data
+        return context
+
+    
 class IndexView(View):
     template_name = 'index.html'
 
