@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Lottery List</title>{% endblock %}
+
+{% block content %}
+<h2>Lottery List</h2>
+<a href="{% url 'lottery_add' %}" class="btn btn-primary">Add Lottery</a>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Lottery Name</th>
+            <th>Close Time</th>
+            <th>Result Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lottery in lotteries %}
+        <tr>
+            <td>{{ lottery.name }}</td>
+            <td>{{ lottery.close_time }}</td>
+            <td>{{ lottery.result_time }}</td>
+            <td>
+                <a href="{% url 'lottery_edit' lottery.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'lottery_delete' lottery.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

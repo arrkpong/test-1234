@@ -1,6 +1,30 @@
 from django.db import models
 from django.core.validators import RegexValidator, MinValueValidator
 
+class LotteryType(models.Model):
+    name = models.CharField(max_length=100, verbose_name='ประเภทหวย')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'ประเภทหวย'
+        verbose_name_plural = 'ประเภทหวย'
+
+class Lottery(models.Model):
+    lottery_type = models.ForeignKey(LotteryType, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='ประเภทหวย')
+    name = models.CharField(max_length=100, verbose_name='ชื่อหวย')
+    close_time = models.TimeField(verbose_name='เวลาปิดรับ')
+    result_time = models.TimeField(verbose_name='เวลาออกผล')
+    image = models.ImageField(upload_to='lottery_images/', null=True, blank=True, verbose_name='รูปภาพหวย') 
+
+    def __str__(self):
+        return f"{self.name} ({self.lottery_type})"
+
+    class Meta:
+        verbose_name = 'หวย'
+        verbose_name_plural = 'หวย'
+
 class Bet(models.Model):
     BET_TYPE_CHOICES = [
         ('two_digit_top', 'สองหลักบน'),
@@ -38,7 +62,6 @@ class Bet(models.Model):
     class Meta:
         verbose_name = 'การแทงหวย'
         verbose_name_plural = 'การแทงหวย'
-
 
     @classmethod
     def get_bet_types(cls):

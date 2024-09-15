@@ -1,15 +1,28 @@
+#lottery\views.py
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.views import View
 from django.shortcuts import render
 from .models import Bet
+from .models import Lottery, LotteryType
 
 class IndexView(View):
     template_name = 'index.html'
 
     def get(self, request):
-        return render(request, self.template_name, {'success': False})
+        # ดึงข้อมูลประเภทของหวยทั้งหมด
+        lottery_types = LotteryType.objects.all()
 
+        # สร้างดิกชันนารีเพื่อเก็บหวยที่เกี่ยวข้องกับแต่ละประเภท
+        lotteries_by_type = {}
+        for lottery_type in lottery_types:
+            lotteries_by_type[lottery_type] = Lottery.objects.filter(lottery_type=lottery_type)
+
+        context = {
+            'lotteries_by_type': lotteries_by_type
+        }
+        return render(request, self.template_name, context)
+    
 class LotteryBetView(View):
     def get(self, request):
         return render(request, 'bet.html')

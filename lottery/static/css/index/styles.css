@@ -1,0 +1,33 @@
+body {
+    font-family: 'Prompt', sans-serif;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.card {
+    background-color: #f8f9fa;
+}
+
+.user-info {
+    border-top: 1px solid #ddd;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+}
+
+.nav-link:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}

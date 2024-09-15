@@ -1,9 +1,11 @@
+<!--lottery\templates\index.html-->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}
     <title>Home</title>
 {% endblock %}
+
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/index/styles.css' %}">
     <style>
@@ -19,6 +21,11 @@
         .card {
             border: 1px solid #ddd;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .card-header {
             background-color: #f8f9fa;
@@ -32,34 +39,78 @@
             background-color: #e2e6ea;
             color: #212529;
         }
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 2rem 0;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-<div class="hero">
-    <div class="container">
-        <h1 class="display-4 fw-bold">Welcome to My Lottery Website!</h1>
-        <p class="lead">Buy your tickets and try your luck for a chance to win big!</p>
-    </div>
-</div>
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
-            <div class="card rounded-4 shadow-sm">
-                <div class="card-header border-0">
-                    <h5 class="mb-0">Exciting Lottery Opportunities</h5>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">Explore our range of lottery options and join the excitement. Don't miss out on your chance to win big!</p>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'bet' %}" class="btn btn-light btn-lg shadow-sm">Get Started</a>
-                    {% else %}
-                        <a href="{% url 'register' %}" class="btn btn-light btn-lg shadow-sm">Get Started</a>
-                    {% endif %}
-                </div>
+<!-- Sidebar -->
+<!--
+<div class="d-flex">
+    <nav class="sidebar bg-light p-3">
+        <div class="sidebar-header">
+            <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                <i class="fas fa-home me-2"></i>
+                <span class="fs-4">บ้านและสวน</span>
+            </a>
+        </div>
+        <hr>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#">รายการสินค้า</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">บิล</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">บิลเสีย</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">ตัวช่วยคีย์</a>
+            </li>
+        </ul>
+        <div class="user-info mt-auto d-flex align-items-center p-2">
+            <img src="user-avatar.jpg" alt="user" width="40" class="me-2 rounded-circle">
+            <div>
+                <p class="mb-0">kace</p>
+                <small>aom@aom.com</small>
             </div>
         </div>
+    </nav>
+-->
+
+    <!-- Main Content -->
+    <div class="content p-4">
+        {% for lottery_type, lotteries in lotteries_by_type.items %}
+        <h4 class="mt-4">{{ lottery_type.name }}</h4>
+        <hr>
+        <div class="row g-3">
+            {% for lottery in lotteries %}
+            <div class="col-md-4">
+                <div class="card p-3 border">
+                    <div class="d-flex align-items-center">
+                        {% if lottery.image %}
+                        <img src="{{ lottery.image.url }}" alt="{{ lottery.name }}" class="me-2" width="40">
+                        {% else %}
+                        <img src="{% static 'images/default-lottery.png' %}" alt="{{ lottery.name }}" class="me-2" width="40">
+                        {% endif %}
+                        <div>
+                            <h5 class="mb-0">{{ lottery.name }}</h5>
+                            <small>เวลาปิดรับ: {{ lottery.close_time }}</small><br>
+                            <small>เวลาออกผล: {{ lottery.result_time }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>ไม่มีข้อมูลหวยในประเภทนี้</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
