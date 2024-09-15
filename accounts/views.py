@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from accounts.models import Profile
 from datetime import datetime, date
 from django.template.loader import render_to_string
-
+from django.shortcuts import get_object_or_404
 
 class LoginRequiredMixin:
     @classmethod
@@ -25,12 +25,6 @@ class LoginRequiredMixin:
         if not request.user.is_authenticated:
             return redirect('/login/')  # Redirect to login page if user is not authenticated
         return super().dispatch(request, *args, **kwargs)
-
-class IndexView(View):
-    template_name = 'index.html'
-
-    def get(self, request):
-        return render(request, self.template_name, {'success': False})
 
 class RegisterView(View):
     template_name = 'register.html'
@@ -155,3 +149,13 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('/login/')
+
+class ProfileView(LoginRequiredMixin, View):
+    template_name = 'profile.html'
+
+    def get(self, request):
+        # Retrieve or create the profile for the logged-in user
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        
+        # Render the profile template with the profile data
+        return render(request, self.template_name, {'profile': profile})

@@ -52,7 +52,11 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">Explore our range of lottery options and join the excitement. Don't miss out on your chance to win big!</p>
-                    <a href="{% url 'register' %}" class="btn btn-light btn-lg shadow-sm">Get Started</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'bet' %}" class="btn btn-light btn-lg shadow-sm">Get Started</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg shadow-sm">Get Started</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

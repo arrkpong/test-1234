@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>History</title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/bet_history/styles.css' %}">
+    <style>
+        .filter-form {
+            margin-bottom: 2rem;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">ประวัติการแทงหวย</h1>
+
+    <!-- ฟอร์มกรองข้อมูล -->
+    <form method="get" class="filter-form">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="bet_type" class="form-label">ประเภทการแทง</label>
+                <select id="bet_type" name="bet_type" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    {% for value, display in bet_types %}
+                        <option value="{{ value }}" {% if request.GET.bet_type == value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="country" class="form-label">ประเทศ</label>
+                <select id="country" name="country" class="form-select">
+                    <option value="">ทั้งหมด</option>
+                    {% for value, display in countries %}
+                        <option value="{{ value }}" {% if request.GET.country == value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="start_date" class="form-label">วันที่เริ่มต้น</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+            </div>
+            <div class="col-md-2">
+                <label for="end_date" class="form-label">วันที่สิ้นสุด</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request.GET.end_date }}">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">กรอง</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- ตารางประวัติการแทงหวย -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ประเภทการแทง</th>
+                <th>หมายเลขที่แทง</th>
+                <th>ประเทศ</th>
+                <th>ชื่อ</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>ยอดเงิน</th>
+                <th>วันที่</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bet in bets %}
+                <tr>
+                    <td>{{ bet.get_bet_type_display }}</td>
+                    <td>{{ bet.bet_number }}</td>
+                    <td>{{ bet.get_country_display }}</td>
+                    <td>{{ bet.name }}</td>
+                    <td>{{ bet.phone_number }}</td>
+                    <td>{{ bet.amount }} บาท</td>  <!-- แสดงยอดเงินที่แทง -->
+                    <td>{{ bet.placed_at|date:"j F Y H:i" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">ไม่พบข้อมูลการแทงหวย</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+{% endblock %}

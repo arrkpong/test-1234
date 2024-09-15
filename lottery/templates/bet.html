@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Bet</title>
+{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+      background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+      color: #fff;
+    }
+    .register-container {
+      min-height: 80vh;
+    }
+    .register-card {
+      background-color: #fff;
+      color: #212529;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      max-width: 500px;
+      width: 100%;
+    }
+    .register-title {
+      font-size: 1.75rem;
+      color: #6e8efb;
+    }
+    .alert-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border-color: #bee5eb;
+    }
+    .btn-primary {
+      background-color: #6e8efb;
+      border-color: #6e8efb;
+    }
+    .btn-primary:hover {
+      background-color: #5a7bf0;
+      border-color: #5a7bf0;
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .form-control {
+      border-radius: 0.375rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>แทงหวยออนไลน์</h1>
+    <p>เลือกประเภทการแทงหวยและกรอกหมายเลขที่คุณต้องการ</p>
+</div>
+
+<div class="container mt-2">
+    <div class="card register-card">
+        <div class="card-header">
+            <h2 class="register-title">กรอกข้อมูลการแทงหวย</h2>
+        </div>
+        <div class="card-body">
+            <!-- Display messages -->
+            {% if messages %}
+                <div class="alert alert-info" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form id="betForm" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="bet_type" class="form-label">เลือกประเภทการแทง</label>
+                    <select id="bet_type" name="bet_type" class="form-select">
+                        <option value="two_digit_top">สองตัวบน</option>
+                        <option value="two_digit_bottom">สองตัวล่าง</option>
+                        <option value="three_digit_top">สามตัวบน</option>
+                        <option value="three_digit_mix">สามตัวโต้ด</option>
+                        <option value="top_run">วิ่งบน</option>
+                        <option value="bottom_run">วิ่งล่าง</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="bet_number" class="form-label">กรอกหมายเลขที่ต้องการแทง</label>
+                    <input type="text" class="form-control" id="bet_number" name="bet_number" required>
+                </div>
+                <div class="mb-3">
+                  <label for="amount" class="form-label">ยอดเงินที่ต้องการแทง</label>
+                  <input type="number" class="form-control" id="amount" name="amount" min="1" step="0.01" required>
+                </div>              
+                <div class="mb-3">
+                    <label for="country" class="form-label">เลือกประเทศ</label>
+                    <select id="country" name="country" class="form-select">
+                        <option value="thailand">ประเทศไทย</option>
+                        <option value="usa">สหรัฐอเมริกา</option>
+                        <option value="uk">สหราชอาณาจักร</option>
+                        <option value="vietnam">เวียดนาม</option>
+                        <option value="laos">ลาว</option>
+                        <!-- เพิ่มประเทศอื่น ๆ ที่ต้องการได้ที่นี่ -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">ชื่อของผู้แทง</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">เบอร์โทรศัพท์</label>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                </div>
+                <button type="submit" class="btn btn-primary">ยืนยันการแทง</button>
+            </form>
+
+            <div id="betResult" class="mt-4"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

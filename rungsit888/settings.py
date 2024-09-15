@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'lottery',
 ]
 
 MIDDLEWARE = [
@@ -104,19 +105,35 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'th'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
 
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+# STATIC_URL กำหนด URL สำหรับการเข้าถึงไฟล์แบบสถิติ
+STATIC_URL = '/static/'
+
+# STATICFILES_DIRS ระบุโฟลเดอร์ที่จะใช้เก็บไฟล์แบบสถิติ (CSS, JavaScript, Images)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # เช่น BASE_DIR / "static" หมายถึงโฟลเดอร์ static ภายในโปรเจกต์
+]
+
+# STATIC_ROOT ระบุโฟลเดอร์เพื่อเก็บไฟล์แบบสถิติหลังจากที่จัดการแล้ว (สำหรับการนำออกไปยัง production)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# MEDIA_URL กำหนด URL สำหรับการเข้าถึงไฟล์มีเดีย (เช่น รูปภาพ, ไฟล์วิดีโอ)
+MEDIA_URL = '/media/'
+
+# MEDIA_ROOT ระบุโฟลเดอร์ที่ใช้เก็บไฟล์มีเดีย (เช่น รูปภาพ, ไฟล์วิดีโอ)
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
