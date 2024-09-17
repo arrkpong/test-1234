@@ -151,22 +151,51 @@
         <div class="col-md-12 content-area">
             <div class="row">
                 <!-- Bet Options -->
-                <div class="col-md-12 col-lg-12 col-xl-8">
-                    <div class="bet-buttons " >
-                        <div role="group" >
-                            <button class="btn btn-primary" onclick="toggleButton(this)">สองตัว</button>
-                            <button class="btn btn-primary" onclick="toggleButton(this)">สามตัว</button>
-                            <button class="btn btn-primary" onclick="toggleButton(this)">เลขวิ่ง</button>
-                            <button class="btn btn-primary" onclick="toggleButton(this)">19 ประตู</button>
-                            <button class="btn btn-primary" onclick="toggleButton(this)">6 กลับ</button>
-                            <button class="btn btn-primary" onclick="toggleButton(this)">รูดหน้า</button>
-                            <button class="btn btn-primary" onclick="toggleButton(this)">รูดหลัง</button>
+                <div class="col-12 col-xl-8">
+                    <div class="bet-buttons">
+                        <!-- แถวแรกของปุ่ม -->
+                        <div class="row">
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">สองตัว</button>
+                          </div>
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">สามตัว</button>
+                          </div>
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">เลขวิ่ง</button>
+                          </div>
                         </div>
-                        <!-- New Buttons -->
-                        <button id="backNumberBtn" class="btn btn-dark" style="display: none;">กลับเลข</button>
-                        <button id="doubleNumberBtn" class="btn btn-outline-primary" style="display: none;">เลขเบิ้ล</button>
-                        <button id="tripleNumberBtn" class="btn btn-outline-primary" style="display: none;">เลขตอง</button>
-                    </div>
+                      
+                        <!-- แถวที่สองของปุ่ม -->
+                        <div class="row">
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">19 ประตู</button>
+                          </div>
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">6 กลับ</button>
+                          </div>
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหน้า</button>
+                          </div>
+                        </div>
+                      
+                        <!-- แถวที่สามของปุ่ม -->
+                        <div class="row">
+                          <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหลัง</button>
+                          </div>
+                        </div>
+                      
+                        <!-- แถวใหม่สำหรับปุ่มที่ซ่อนอยู่ -->
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-between">
+                                <button id="backNumberBtn" class="btn btn-dark w-100 me-2" style="display: none;">กลับเลข</button>
+                                <button id="doubleNumberBtn" class="btn btn-outline-primary w-100 me-2" style="display: none;">เลขเบิ้ล</button>
+                                <button id="tripleNumberBtn" class="btn btn-outline-primary w-100 me-2" style="display: none;">เลขตอง</button>
+                            </div>
+                        </div>
+                      </div>
+                      
 
                     <!-- Bet Form -->
                     <form>
@@ -204,7 +233,7 @@
                 </div>
 
                 <!-- History and Closed Numbers -->
-                <div class="col-md-12 col-lg-12 col-xl-4">
+                <div class="col-12 col-xl-4">
                     <!-- Bet History -->
                     <div class="bet-history mb-3">
                         <h5>รายการบิลล่าสุด 15 รายการ</h5>
