@@ -152,17 +152,20 @@
             <div class="row">
                 <!-- Bet Options -->
                 <div class="col-md-8">
-                    <div class="bet-buttons">
-                        <button class="btn btn-primary">สองตัว</button>
-                        <button class="btn btn-info">สามตัว</button>
-                        <button class="btn btn-success">เลขวิ่ง</button>
-                        <button class="btn btn-secondary">19 ประตู</button>
-                        <button class="btn btn-warning">6 กลับ</button>
-                        <button class="btn btn-danger">รูดหน้า</button>
-                        <button class="btn btn-light">รูดหลัง</button>
+                    <div class="bet-buttons" >
+                        <div role="group" >
+                            <button class="btn btn-primary" onclick="toggleButton(this)">สองตัว</button>
+                            <button class="btn btn-primary" onclick="toggleButton(this)">สามตัว</button>
+                            <button class="btn btn-primary" onclick="toggleButton(this)">เลขวิ่ง</button>
+                            <button class="btn btn-primary" onclick="toggleButton(this)">19 ประตู</button>
+                            <button class="btn btn-primary" onclick="toggleButton(this)">6 กลับ</button>
+                            <button class="btn btn-primary" onclick="toggleButton(this)">รูดหน้า</button>
+                            <button class="btn btn-primary" onclick="toggleButton(this)">รูดหลัง</button>
+                        </div>
                         <!-- New Buttons -->
-                        <button class="btn btn-dark">กลับเลข</button>
-                        <button class="btn btn-outline-primary">เลขเบิ้ล</button>
+                        <button id="backNumberBtn" class="btn btn-dark" style="display: none;">กลับเลข</button>
+                        <button id="doubleNumberBtn" class="btn btn-outline-primary" style="display: none;">เลขเบิ้ล</button>
+                        <button id="tripleNumberBtn" class="btn btn-outline-primary" style="display: none;">เลขตอง</button>
                     </div>
 
                     <!-- Bet Form -->
@@ -244,4 +247,28 @@
         </div>
     </div>
 </div>
+<script>
+    function toggleButton(button) {
+    var buttons = document.querySelectorAll('.btn');
+    buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    button.classList.add('active');
+
+    if (button.innerText === "สองตัว") {
+      document.getElementById("backNumberBtn").style.display = "inline-block";
+      document.getElementById("doubleNumberBtn").style.display = "inline-block";
+      document.getElementById("tripleNumberBtn").style.display = "none";
+    }else if (button.innerText === "สามตัว") {
+      document.getElementById("backNumberBtn").style.display = "inline-block";
+      document.getElementById("tripleNumberBtn").style.display = "inline-block";
+      document.getElementById("doubleNumberBtn").style.display = "none";
+    }else {
+      document.getElementById("backNumberBtn").style.display = "none";
+      document.getElementById("doubleNumberBtn").style.display = "none";
+      document.getElementById("tripleNumberBtn").style.display = "none";
+    }
+}
+
+</script>
 {% endblock %}
