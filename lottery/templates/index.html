@@ -8,20 +8,42 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/index/styles.css' %}">
+    <style>
+    .lottery-close-time {
+    border: 3px solid red;
+    background-color: red;
+    border-radius: 10px;
+    font-size: 12px; /* ขนาดตัวหนังสือ */
+    color: white; /* สีตัวหนังสือ */
+    }
+    /* css/index/styles.css */
+    .link-card {
+    display: block;
+    border-radius: 5px;
+    text-align: left;
+    background-color: blue;
+    text-decoration: none;
+    color: inherit;
+}
+
+    .link-card:hover {
+    background-color: green;
+}
+
+    </style>
 {% endblock %}
 
 {% block content %}
 <!-- Main Content -->
 <div class="container">
     <div class="content p-4">
-        <h1>แทงหวยออนไลน์</h1>
         {% for lottery_type, lotteries in lotteries_by_type.items %}
         <h4 class="mt-4">{{ lottery_type.name }}</h4>
         <hr>
         <div class="row g-3">
             {% for lottery in lotteries %}
             <div class="col-md-6 col-lg-4">
-                <a href="{% url 'lottery_detail' pk=lottery.pk %}" class="text-decoration-none">
+                <a href="{% url 'lottery_detail' pk=lottery.pk %}" class="link-card">
                     <div class="card p-3 border">
                         <div class="d-flex align-items-center">
                             {% if lottery.image %}
@@ -31,8 +53,7 @@
                             {% endif %}
                             <div class="card-content">
                                 <h5 class="mb-0">{{ lottery.name }}</h5>
-                                <small>เวลาปิดรับ: {{ lottery.close_time }}</small><br>
-                                <small>เวลาออกผล: {{ lottery.result_time }}</small>
+                                <small class="lottery-close-time">ปิดรับ: {{ lottery.close_time }}</small>
                             </div>
                         </div>
                     </div>
