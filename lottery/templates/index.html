@@ -75,7 +75,7 @@
 </div>
 
 <script>
-   function initializeCountdown() {
+    function initializeCountdown() {
     const countdownElements = document.querySelectorAll('.countdown');
 
     countdownElements.forEach(function(element) {
@@ -115,6 +115,13 @@
                 if (timeUntilFiveAM <= 0) {
                     closeTime.setDate(closeTime.getDate() + 1);  // รีเซ็ตเวลาปิดรับให้เป็นรอบใหม่
                 }
+
+                // ซ่อนการ์ดเมื่อหมดเวลา
+                element.closest('.card').style.display = 'none';
+                // element.closest('.col').style.display = 'none';
+                element.closest('.col-md-4').style.display = 'none';
+
+
                 return;
             }
 

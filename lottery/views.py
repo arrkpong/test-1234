@@ -41,7 +41,9 @@ class IndexView(View):
         # สร้างดิกชันนารีเพื่อเก็บหวยที่เกี่ยวข้องกับแต่ละประเภท
         lotteries_by_type = {}
         for lottery_type in lottery_types:
-            lotteries_by_type[lottery_type] = Lottery.objects.filter(lottery_type=lottery_type)
+            lotteries_by_type[lottery_type] = Lottery.objects.filter(
+                lottery_type=lottery_type
+            ).order_by('close_time')
 
         context = {
             'lotteries_by_type': lotteries_by_type
