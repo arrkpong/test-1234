@@ -94,17 +94,11 @@
                                 <a class="nav-link" href="{% url 'bet_history' %}">History</a>
                             </li>-->
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'profile' %}">Account {{ user.username }}</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'login' %}">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'register' %}">Register</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -120,11 +114,7 @@
         </div>
     </main>
 
-    <footer class="bg-dark text-light text-center py-4">
-        <div class="container">
-            <p class="mb-0">&copy; {{ current_year }} My Lottery Website</p>
-        </div>
-    </footer>
+
     {% block scripts %}
     <!-- Bootstrap 5 JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
