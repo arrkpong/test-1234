@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="{% static 'css/index/styles.css' %}">
     <style>
     .lottery-close-time {
-    border: 3px solid red;
-    background-color: red;
+    border: 3px solid rgb(250 82 82);
+    background-color: rgb(250 82 82);
     border-radius: 10px;
-    font-size: 12px; /* ขนาดตัวหนังสือ */
+    font-size: 8px; /* ขนาดตัวหนังสือ */
     color: white; /* สีตัวหนังสือ */
     }
     /* css/index/styles.css */
@@ -42,9 +42,9 @@
         <hr>
         <div class="row g-3">
             {% for lottery in lotteries %}
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-4 col-lg-3">
                 <a href="{% url 'lottery_detail' pk=lottery.pk %}" class="link-card">
-                    <div class="card p-3 border">
+                    <div class="card p-1 border">
                         <div class="d-flex align-items-center">
                             {% if lottery.image %}
                             <img src="{{ lottery.image.url }}" alt="{{ lottery.name }}" class="me-2" width="50" height="50">
@@ -52,7 +52,7 @@
                             <img src="{% static 'images/default-lottery.png' %}" alt="{{ lottery.name }}" class="me-2" width="40">
                             {% endif %}
                             <div class="card-content">
-                                <h5 class="mb-0">{{ lottery.name }}</h5>
+                                <h6 class="mb-0">{{ lottery.name }}</h6>
                                 <small class="lottery-close-time">ปิดรับ: {{ lottery.close_time }}</small>
                             </div>
                         </div>
