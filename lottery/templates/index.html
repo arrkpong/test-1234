@@ -75,37 +75,65 @@
 </div>
 
 <script>
-    // ฟังก์ชันนับเวลาถอยหลัง
-    function initializeCountdown() {
-        const countdownElements = document.querySelectorAll('.countdown');
-    
-        countdownElements.forEach(function(element) {
-            const closeTimeString = element.getAttribute('data-close-time');
-            const closeTimeParts = closeTimeString.split(':');
-            const closeTime = new Date();
-            closeTime.setHours(closeTimeParts[0], closeTimeParts[1], closeTimeParts[2]);
-    
-            function updateCountdown() {
-                const now = new Date();
-                const timeLeft = closeTime - now;
-    
-                if (timeLeft <= 0) {
-                    element.textContent = 'หมดเวลา';
-                    return;
-                }
-    
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-    
-                element.textContent = hours + 'h ' + minutes + 'm ' + seconds + 's';
+   function initializeCountdown() {
+    const countdownElements = document.querySelectorAll('.countdown');
+
+    countdownElements.forEach(function(element) {
+        // ดึงเวลาปิดรับจาก attribute data-close-time (เช่น {{ lottery.close_time }})
+        const closeTimeString = element.getAttribute('data-close-time');
+        const closeTimeParts = closeTimeString.split(':');
+        const closeTime = new Date();
+        closeTime.setHours(closeTimeParts[0], closeTimeParts[1], closeTimeParts[2]);
+
+        // ฟังก์ชันเพื่อคำนวณเวลาตี 5 ของวันถัดไป
+        function getNextFiveAM() {
+            const now = new Date();
+            const nextFiveAM = new Date();
+            nextFiveAM.setHours(5, 0, 0, 0);  // ตั้งเวลาเป็น 05:00:00 น.
+
+            // ถ้าเวลาปัจจุบันเลย 05:00 น. ไปแล้ว ให้ตั้งเวลาเป็นตี 5 ของวันถัดไป
+            if (now > nextFiveAM) {
+                nextFiveAM.setDate(nextFiveAM.getDate() + 1);
             }
-    
-            setInterval(updateCountdown, 1000);
-        });
-    }
-    
-    // เรียกฟังก์ชันเมื่อโหลดหน้าเสร็จ
-    document.addEventListener('DOMContentLoaded', initializeCountdown);
+            return nextFiveAM;
+        }
+
+        // ฟังก์ชันสำหรับการอัปเดตการนับถอยหลัง
+        function updateCountdown() {
+            const now = new Date();
+            const timeLeft = closeTime - now;
+
+            // ถ้าเวลาถึงหรือเกินเวลาปิดรับแล้ว
+            if (timeLeft <= 0) {
+                element.textContent = 'หมดเวลา';  // แสดงข้อความ "หมดเวลา"
+
+                // ตรวจสอบว่าเป็นเวลา 05:00 น. หรือยัง
+                const nextFiveAM = getNextFiveAM();
+                const timeUntilFiveAM = nextFiveAM - now;
+
+                // ถ้าถึงเวลา 05:00 น. ของวันถัดไป
+                if (timeUntilFiveAM <= 0) {
+                    closeTime.setDate(closeTime.getDate() + 1);  // รีเซ็ตเวลาปิดรับให้เป็นรอบใหม่
+                }
+                return;
+            }
+
+            // คำนวณชั่วโมง นาที และวินาทีที่เหลืออยู่
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // แสดงเวลาถอยหลัง
+            element.textContent = hours + 'h ' + minutes + 'm ' + seconds + 's';
+        }
+
+        // อัปเดตเวลาทุกๆ 1 วินาที
+        setInterval(updateCountdown, 1000);
+    });
+}
+
+// เรียกฟังก์ชันเมื่อโหลดหน้าเสร็จ
+document.addEventListener('DOMContentLoaded', initializeCountdown);
+
 </script>
 {% endblock %}
