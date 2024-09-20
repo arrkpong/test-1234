@@ -27,6 +27,7 @@ class LotteryDetailView(TemplateView):
         context['lottery_name'] = lottery.name
         context['draw_date'] = formatted_date
         context['total_amount'] = '0฿'  # Replace with actual data
+        context['close_time'] = lottery.close_time.strftime('%H:%M:%S')
         return context
 
     
