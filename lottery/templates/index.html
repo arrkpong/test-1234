@@ -79,10 +79,14 @@
     const countdownElements = document.querySelectorAll('.countdown');
 
     countdownElements.forEach(function(element) {
-        // ดึงเวลาปิดรับจาก attribute data-close-time (เช่น {{ lottery.close_time }})
+        // ดึงเวลาปิดรับจาก attribute data-close-time 
         const closeTimeString = element.getAttribute('data-close-time');
         const closeTimeParts = closeTimeString.split(':');
         const closeTime = new Date();
+
+        if (closeTimeParts[0] < 5) {
+        closeTime.setDate(closeTime.getDate() + 1);
+    }
         closeTime.setHours(closeTimeParts[0], closeTimeParts[1], closeTimeParts[2]);
 
         // ฟังก์ชันเพื่อคำนวณเวลาตี 5 ของวันถัดไป
@@ -117,9 +121,9 @@
                 }
 
                 // ซ่อนการ์ดเมื่อหมดเวลา
-                element.closest('.card').style.display = 'none';
-                // element.closest('.col').style.display = 'none';
-                element.closest('.col-md-4').style.display = 'none';
+                // element.closest('.card').style.display = 'none';
+                // // element.closest('.col').style.display = 'none';
+                // element.closest('.col-md-4').style.display = 'none';
 
 
                 return;
