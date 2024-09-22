@@ -7,146 +7,12 @@
 {% endblock %}
 
 {% block style %}
-    <style>
-        /* Hero section */
-        .hero {
-            background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-            color: #fff;
-            padding: 5rem 0;
-            text-align: center;
-        }
-        .hero h1, .hero p {
-            color: #fff;
-        }
-
-        /* Main content area */
-        .content-area {
-            padding: 2rem;
-            background-color: #f8f9fa;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Bet buttons */
-        .bet-buttons button {
-            margin-bottom: 0.5rem;
-            width: auto;
-            font-size: 1rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        }
-        .bet-buttons button:hover {
-            transform: translateY(-2px);
-        }
-        .bet-buttons button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Bet summary section */
-        .bet-summary {
-            background-color: #f8f9fa;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .bet-summary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .bet-summary-header {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #495057;
-        }
-        .bet-summary p, .bet-summary div, .bet-summary span {
-            color: #495057; /* Set a color for better visibility */
-        }
-
-        /* Form input styling */
-        .form-control {
-            margin-bottom: 0.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid #ddd;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .form-control:focus {
-            border-color: #6e8efb;
-            box-shadow: 0 0 0 0.2rem rgba(110, 140, 255, 0.25);
-        }
-
-        /* Bet history and closed numbers sections */
-        .bet-history, .bet-close-number {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .bet-history h5, .bet-close-number h5 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #495057;
-        }
-
-        /* Submit button styling */
-        .submit-button {
-            background-color: #ff6700;
-            color: white;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s ease, transform 0.3s;
-            font-size: 1.1rem;
-        }
-        .submit-button:hover {
-            background-color: #ff5500;
-            transform: translateY(-2px);
-        }
-
-        /* New Button Styles */
-        .btn-dark {
-            background-color: #343a40;
-            color: white;
-            border: 1px solid #343a40;
-        }
-        .btn-dark:hover {
-            background-color: #23272b;
-            border-color: #1d2124;
-        }
-        .btn-outline-primary {
-            color: #007bff;
-            border-color: #007bff;
-        }
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: white;
-        }
-
-        /* Additional Styles for Bet List and Delete Button */
-        .bet-list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 0.5rem;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .bet-list-item .btn {
-            margin-left: 0.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/detail/styles.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row justify-content-center ">
+    <div class="row justify-content-center">
         <!-- Main Content Area -->
         <div class="col-md-12 content-area">
             <div class="row">
@@ -198,30 +64,27 @@
                       
 
                     <!-- Bet Form -->
-                    <form>
+                    <form id="bet-form" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="bet-data" name="bet_data">
                         <div class="d-flex">
-                            <input type="text" class="form-control" placeholder="ใส่เลข">
-                            <input type="text" class="form-control mx-1" placeholder="บน">
-                            <input type="text" class="form-control" placeholder="ล่าง">
-                            <button type="submit" class="btn btn-success ms-1" style="width:200px; height: 40px;">เพิ่ม +</button>
+                            <input type="text" id="bet-number" class="form-control" placeholder="ใส่เลข">
+                            <input type="text" id="bet-top" class="form-control mx-1" placeholder="บน">
+                            <input type="text" id="bet-bottom" class="form-control" placeholder="ล่าง">
+                            <button type="button" class="btn btn-success ms-1" onclick="addBet()" style="width:200px; height: 40px;">เพิ่ม +</button>
                         </div>
                     </form>
 
-                    <!-- Selected Bets -->
-                    <div class="bet-summary">
+                     <!-- Selected Bets -->
+                     <div class="bet-summary">
                         <div class="bet-summary-header">{{ lottery.name }}</div>
                         <p>{{ draw_date }}</p>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>จำนวนรายการ: 5</span>
-                            <span>ยอดรวม: 0฿</span>
+                            <span>จำนวนรายการ: <span id="bet-count">0</span></span>
+                            <span>ยอดรวม: <span id="total-amount">0฿</span></span>
                         </div>
-                        <div class="bet-list">
-                            <!-- Example bet items -->
-                            <div class="bet-list-item">
-                                <span>เลข: 123</span>
-                                <button class="btn btn-danger btn-sm">ลบ</button>
-                            </div>
-                            <!-- Repeat as needed -->
+                        <div id="bet-list" class="bet-list">
+                            <!-- Bets will be added here dynamically -->
                         </div>
                     </div>
 
@@ -229,10 +92,10 @@
                     <textarea class="form-control" placeholder="ชื่อ"></textarea>
 
                     <!-- Submit Button -->
-                    <button class="submit-button my-3">สั่งโพย</button>
+                    <button class="submit-button my-3" type="submit" onclick="prepareFormSubmission()">สั่งโพย</button>
                 </div>
 
-                <!-- History and Closed Numbers -->
+                <!-- History and Closed Numbers (Unchanged) -->
                 <div class="col-12 col-xl-4">
                     <!-- Bet History -->
                     <div class="bet-history mb-3">
@@ -277,27 +140,45 @@
     </div>
 </div>
 <script>
-    function toggleButton(button) {
-    var buttons = document.querySelectorAll('.btn');
-    buttons.forEach(function(btn) {
-        btn.classList.remove('active');
-    });
-    button.classList.add('active');
+    let bets = [];
 
-    if (button.innerText === "สองตัว") {
-      document.getElementById("backNumberBtn").style.display = "inline-block";
-      document.getElementById("doubleNumberBtn").style.display = "inline-block";
-      document.getElementById("tripleNumberBtn").style.display = "none";
-    }else if (button.innerText === "สามตัว") {
-      document.getElementById("backNumberBtn").style.display = "inline-block";
-      document.getElementById("tripleNumberBtn").style.display = "inline-block";
-      document.getElementById("doubleNumberBtn").style.display = "none";
-    }else {
-      document.getElementById("backNumberBtn").style.display = "none";
-      document.getElementById("doubleNumberBtn").style.display = "none";
-      document.getElementById("tripleNumberBtn").style.display = "none";
+    function addBet() {
+        const number = document.getElementById('bet-number').value;
+        const top = document.getElementById('bet-top').value;
+        const bottom = document.getElementById('bet-bottom').value;
+
+        if (number && (top || bottom)) {
+            bets.push({ number: number, top: top, bottom: bottom });
+
+            // Add the bet to the list display
+            const betItem = document.createElement('div');
+            betItem.classList.add('bet-list-item', 'd-flex', 'justify-content-between');
+            betItem.innerHTML = `
+                <span>เลข: ${number} | บน: ${top} | ล่าง: ${bottom}</span>
+                <button class="btn btn-danger btn-sm" onclick="removeBet(this, ${bets.length - 1})">ลบ</button>
+            `;
+            document.getElementById('bet-list').appendChild(betItem);
+
+            // Clear input fields
+            document.getElementById('bet-number').value = '';
+            document.getElementById('bet-top').value = '';
+            document.getElementById('bet-bottom').value = '';
+        } else {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        }
     }
-}
 
+    function removeBet(button, index) {
+        // Remove from the list display
+        button.parentElement.remove();
+
+        // Remove the bet from the array
+        bets.splice(index, 1);
+    }
+
+    function prepareFormSubmission() {
+        const betData = JSON.stringify(bets);
+        document.getElementById('bet-data').value = betData;
+    }
 </script>
 {% endblock %}

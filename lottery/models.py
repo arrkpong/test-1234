@@ -1,5 +1,5 @@
+# lottery/models.py
 from django.db import models
-from django.core.validators import RegexValidator, MinValueValidator
 
 class LotteryType(models.Model):
     name = models.CharField(max_length=100, verbose_name='ประเภทหวย')
@@ -16,7 +16,7 @@ class Lottery(models.Model):
     name = models.CharField(max_length=100, verbose_name='ชื่อหวย')
     close_time = models.TimeField(verbose_name='เวลาปิดรับ')
     result_time = models.TimeField(verbose_name='เวลาออกผล')
-    image = models.ImageField(upload_to='lottery_images/', null=True, blank=True, verbose_name='รูปภาพหวย') 
+    image = models.ImageField(upload_to='lottery_images/', null=True, blank=True, verbose_name='รูปภาพหวย')
 
     def __str__(self):
         return f"{self.name} ({self.lottery_type})"
@@ -26,47 +26,15 @@ class Lottery(models.Model):
         verbose_name_plural = 'หวย'
 
 class Bet(models.Model):
-    BET_TYPE_CHOICES = [
-        ('two_digit_top', 'สองหลักบน'),
-        ('two_digit_bottom', 'สองหลักล่าง'),
-        ('three_digit_top', 'สามหลักบน'),
-        ('three_digit_mix', 'สามหลักผสม'),
-        ('top_run', 'วิ่งบน'),
-        ('bottom_run', 'วิ่งล่าง'),
-    ]
-    
-    COUNTRY_CHOICES = [
-        ('thailand', 'ประเทศไทย'),
-        ('usa', 'สหรัฐอเมริกา'),
-        ('uk', 'สหราชอาณาจักร'),
-        ('vietnam', 'เวียดนาม'),
-        ('laos', 'ลาว'),
-    ]
-
-    bet_type = models.CharField(max_length=20, choices=BET_TYPE_CHOICES, verbose_name='ประเภทการแทง')
-    bet_number = models.CharField(max_length=10, verbose_name='หมายเลขที่แทง')
-    country = models.CharField(max_length=20, choices=COUNTRY_CHOICES, default='thailand', verbose_name='ประเทศ')
-    name = models.CharField(max_length=100, verbose_name='ชื่อของผู้แทง', blank=True, null=True)
-    phone_number = models.CharField(
-        max_length=15,
-        validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="เบอร์โทรศัพท์ไม่ถูกต้อง")],
-        verbose_name='เบอร์โทรศัพท์ของผู้แทง',
-        blank=True
-    )
-    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], verbose_name='ยอดเงินที่แทง', blank=True, null=True)
-    placed_at = models.DateTimeField(auto_now_add=True, verbose_name='เวลาที่แทง')
+    lottery = models.ForeignKey(Lottery, on_delete=models.CASCADE, verbose_name='หวยที่เดิมพัน')
+    number = models.CharField(max_length=10, verbose_name='เลขที่เดิมพัน')
+    top = models.CharField(max_length=10, null=True, blank=True, verbose_name='บน')
+    bottom = models.CharField(max_length=10, null=True, blank=True, verbose_name='ล่าง')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='วันที่เดิมพัน')
 
     def __str__(self):
-        return f'{self.get_bet_type_display()} - {self.bet_number} ({self.get_country_display()}) by {self.name or "Anonymous"}'
+        return f"Bet {self.number} on {self.lottery.name}"
 
     class Meta:
-        verbose_name = 'การแทงหวย'
-        verbose_name_plural = 'การแทงหวย'
-
-    @classmethod
-    def get_bet_types(cls):
-        return dict(cls.BET_TYPE_CHOICES)
-
-    @classmethod
-    def get_countries(cls):
-        return dict(cls.COUNTRY_CHOICES)
+        verbose_name = 'โพยเดิมพัน'
+        verbose_name_plural = 'โพยเดิมพัน'

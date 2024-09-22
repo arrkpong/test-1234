@@ -59,3 +59,23 @@ hr {
     border-top: 1px solid #ddd;
     margin: 2rem 0;
 }
+
+.lottery-close-time {
+    border: 3px solid rgb(250 82 82);
+    background-color: rgb(250 82 82);
+    border-radius: 10px;
+    font-size: 8px; /* ขนาดตัวหนังสือ */
+    color: white; /* สีตัวหนังสือ */
+    }
+    /* css/index/styles.css */
+    .link-card {
+    display: block;
+    border-radius: 5px;
+    background-color: rgb(34 139 230);
+    text-decoration: none;
+    color: inherit;
+}
+
+    .link-card:hover {
+    background-color: rgb(47 158 68);
+}

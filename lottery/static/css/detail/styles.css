@@ -1,0 +1,133 @@
+/* Hero section */
+.hero {
+    background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+    color: #fff;
+    padding: 5rem 0;
+    text-align: center;
+}
+.hero h1, .hero p {
+    color: #fff;
+}
+
+/* Main content area */
+.content-area {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Bet buttons */
+.bet-buttons button {
+    margin-bottom: 0.5rem;
+    width: auto;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.bet-buttons button:hover {
+    transform: translateY(-2px);
+}
+.bet-buttons button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Bet summary section */
+.bet-summary {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.bet-summary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.bet-summary-header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #495057;
+}
+.bet-summary p, .bet-summary div, .bet-summary span {
+    color: #495057; /* Set a color for better visibility */
+}
+
+/* Form input styling */
+.form-control {
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-control:focus {
+    border-color: #6e8efb;
+    box-shadow: 0 0 0 0.2rem rgba(110, 140, 255, 0.25);
+}
+
+/* Bet history and closed numbers sections */
+.bet-history, .bet-close-number {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.bet-history h5, .bet-close-number h5 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #495057;
+}
+
+/* Submit button styling */
+.submit-button {
+    background-color: #ff6700;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease, transform 0.3s;
+    font-size: 1.1rem;
+}
+.submit-button:hover {
+    background-color: #ff5500;
+    transform: translateY(-2px);
+}
+
+/* New Button Styles */
+.btn-dark {
+    background-color: #343a40;
+    color: white;
+    border: 1px solid #343a40;
+}
+.btn-dark:hover {
+    background-color: #23272b;
+    border-color: #1d2124;
+}
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+}
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Additional Styles for Bet List and Delete Button */
+.bet-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.bet-list-item .btn {
+    margin-left: 0.5rem;
+}
