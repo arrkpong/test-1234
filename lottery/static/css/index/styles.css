@@ -15,7 +15,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     max-width: 100%; /* Ensure cards don't overflow their container */
-    border-radius: 0.5rem; /* Optional: rounded corners */
+    border-radius: 0; /* Optional: rounded corners */
     overflow: hidden; /* Ensure content doesn't overflow */
     width: auto;
     height: auto; /* Set a fixed height for the cards */
@@ -30,7 +30,7 @@
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateX(4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
