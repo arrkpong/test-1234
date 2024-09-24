@@ -69,3 +69,6 @@ class IndexView(View):
             'lotteries_by_type': lotteries_by_type
         }
         return render(request, self.template_name, context)
+    
+class LotterryBills(TemplateView):
+    template_name = 'bills.html'
