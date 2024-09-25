@@ -157,7 +157,33 @@
         font-size: 30px; /* ปรับขนาดตัวอักษร */
         font-weight: bold; /* ปรับความหนาให้เป็นตัวหนา */
         }
+        .search {
+        display: flex;
+        gap: 20px; /* เพิ่มระยะห่างระหว่างกลุ่มฟิลด์ */
+        align-items: flex-end; /* ทำให้ปุ่มค้นหาอยู่แนวเดียวกับฟิลด์ input */
+        }
 
+        .date-group {
+        display: flex;
+        flex-direction: column; /* จัด label ให้อยู่บน input */
+        }
+
+        label {
+         margin-bottom: 5px; /* เพิ่มระยะห่างระหว่าง label และ input */
+        }
+        .search-button {
+        padding: 8px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-left: 0px; /* ปรับระยะห่างทางด้านซ้าย */
+        margin-right: 20px;
+        align-self: flex-start; /* จัดตำแหน่งปุ่มไว้ด้านบนของช่องฟิลด์ */
+        }
+        button {
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        }
 
     </style>
 {% endblock %}
@@ -166,11 +192,17 @@
     <header class="bill-header">ข้อมูลบิล</header>
     <div class="filter-section">
         <div class="search">
-            <label for="start-date">ตั้งแต่วันที่:</label>
-            <input type="date" id="start-date" value="2024-09-24">
-            <label for="end-date">ถึงวันที่:</label>
-            <input type="date" id="end-date" value="2024-09-24">
-            <button>ค้นหา</button>
+            <div class="date-group">
+                <label for="start-date">ตั้งแต่วันที่</label>
+                <input type="date" id="start-date" value="2024-09-24" onchange="formatDate(this)">
+            </div>
+        
+            <div class="date-group">
+                <label for="end-date">ถึงวันที่</label>
+                <input type="date" id="end-date" value="2024-09-24" onchange="formatDate(this)">
+            </div>
+        
+            <button class="search-button">ค้นหา</button>
         </div>
 
         <div class="filter-buttons">
