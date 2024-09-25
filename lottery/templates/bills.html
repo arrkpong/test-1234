@@ -175,10 +175,12 @@
         padding: 8px 16px;
         font-size: 16px;
         cursor: pointer;
-        margin-left: 0px; /* ปรับระยะห่างทางด้านซ้าย */
+        margin-left: -20px; /* Adjusts left margin */
         margin-right: 20px;
-        align-self: flex-start; /* จัดตำแหน่งปุ่มไว้ด้านบนของช่องฟิลด์ */
+        margin-top: 30px; /* Moves the button down */
+        align-self: flex-start; /* Aligns the button within the flex container */
         }
+
         button {
         padding: 5px 10px;
         font-size: 16px;
@@ -194,12 +196,12 @@
         <div class="search">
             <div class="date-group">
                 <label for="start-date">ตั้งแต่วันที่</label>
-                <input type="date" id="start-date" value="2024-09-24" onchange="formatDate(this)">
+                <input type="date" id="start-date">
             </div>
-        
+            
             <div class="date-group">
                 <label for="end-date">ถึงวันที่</label>
-                <input type="date" id="end-date" value="2024-09-24" onchange="formatDate(this)">
+                <input type="date" id="end-date">
             </div>
         
             <button class="search-button">ค้นหา</button>
@@ -230,4 +232,16 @@
         </thead>
 
     </table>
+
+<script>
+    // Function to set the current date
+    function setCurrentDate() {
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
+        document.getElementById('start-date').value = today;
+        document.getElementById('end-date').value = today;
+    }
+
+    // Call the function when the page loads
+    window.onload = setCurrentDate;
+</script>
 {% endblock %}
