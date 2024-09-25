@@ -16,9 +16,11 @@
             padding: 20px;
         }
 
-        .filter-section .search {
-            display: flex;
-            align-items: center;
+        .search {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
         }
 
         .filter-section .search input {
@@ -164,8 +166,15 @@
         }
 
         .date-group {
-        display: flex;
-        flex-direction: column; /* จัด label ให้อยู่บน input */
+        margin-bottom: 10px;
+        }
+        .date-group label {
+        display: inline-block;
+        width: 100px;
+        }
+        .date-group input {
+        padding: 5px;
+        font-size: 16px;
         }
 
         label {
@@ -174,13 +183,29 @@
         .search-button {
         padding: 8px 16px;
         font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
         cursor: pointer;
-        margin-left: -20px; /* Adjusts left margin */
-        margin-right: 20px;
-        margin-top: 30px; /* Moves the button down */
-        align-self: flex-start; /* Aligns the button within the flex container */
+        margin-top: 10px;
         }
-
+        .button-group {
+        margin-top: 10px;
+        }
+        .button-group button {
+        padding: 8px 12px;
+        font-size: 14px;
+        margin: 0 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        }
+        .date-info {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #666;
+        }
         button {
         padding: 5px 10px;
         font-size: 16px;
@@ -192,20 +217,33 @@
 
 {% block content %}
     <header class="bill-header">ข้อมูลบิล</header>
-    <div class="filter-section">
-        <div class="search">
-            <div class="date-group">
-                <label for="start-date">ตั้งแต่วันที่</label>
-                <input type="date" id="start-date">
-            </div>
-            
-            <div class="date-group">
-                <label for="end-date">ถึงวันที่</label>
-                <input type="date" id="end-date">
-            </div>
-        
-            <button class="search-button">ค้นหา</button>
+    <div class="search">
+        <h2>ข้อมูลบิล</h2>
+        <div class="date-group">
+            <label for="start-date">ตั้งแต่วันที่</label>
+            <input type="date" id="start-date">
         </div>
+    
+        <div class="date-group">
+            <label for="end-date">ถึงวันที่</label>
+            <input type="date" id="end-date">
+        </div>
+    
+        <button class="search-button">ค้นหา</button>
+        
+        <div class="button-group">
+            <button onclick="setToday()">วันนี้</button>
+            <button onclick="setYesterday()">เมื่อวาน</button>
+            <button onclick="setLastWeek()">สัปดาห์นี้</button>
+            <button onclick="setPreviousWeek()">สัปดาห์ที่แล้ว</button>
+            <button onclick="setThisMonth()">เดือนนี้</button>
+            <button onclick="setLastMonth()">เดือนที่แล้ว</button>
+        </div>
+    
+        <div class="date-info">
+            ข้อมูลตั้งแต่วันที่ <span id="display-start-date"></span> ถึง <span id="display-end-date"></span>
+        </div>
+    </div>
 
         <div class="filter-buttons">
             <button>วันนี้</button>
@@ -241,7 +279,75 @@
         document.getElementById('end-date').value = today;
     }
 
-    // Call the function when the page loads
-    window.onload = setCurrentDate;
+    window.onload = function() {
+    // Set today's date by default
+    setToday();
+    }
+
+    function setToday() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('start-date').value = today;
+        document.getElementById('end-date').value = today;
+        updateDateInfo();
+    }
+
+    function setYesterday() {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const formattedYesterday = yesterday.toISOString().split('T')[0];
+
+        document.getElementById('start-date').value = formattedYesterday;
+        document.getElementById('end-date').value = formattedYesterday;
+        updateDateInfo();
+    }
+
+    function setLastWeek() {
+        const today = new Date();
+        const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+        const lastDayOfWeek = new Date(today.setDate(today.getDate() + 6));
+
+        document.getElementById('start-date').value = firstDayOfWeek.toISOString().split('T')[0];
+        document.getElementById('end-date').value = lastDayOfWeek.toISOString().split('T')[0];
+        updateDateInfo();
+    }
+
+    function setPreviousWeek() {
+        const today = new Date();
+        const firstDayOfLastWeek = new Date(today.setDate(today.getDate() - today.getDay() - 7));
+        const lastDayOfLastWeek = new Date(today.setDate(today.getDate() + 6));
+
+        document.getElementById('start-date').value = firstDayOfLastWeek.toISOString().split('T')[0];
+        document.getElementById('end-date').value = lastDayOfLastWeek.toISOString().split('T')[0];
+        updateDateInfo();
+    }
+
+    function setThisMonth() {
+        const today = new Date();
+        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        document.getElementById('start-date').value = firstDayOfMonth.toISOString().split('T')[0];
+        document.getElementById('end-date').value = lastDayOfMonth.toISOString().split('T')[0];
+        updateDateInfo();
+    }
+
+    function setLastMonth() {
+        const today = new Date();
+        const firstDayOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+
+        document.getElementById('start-date').value = firstDayOfLastMonth.toISOString().split('T')[0];
+        document.getElementById('end-date').value = lastDayOfLastMonth.toISOString().split('T')[0];
+        updateDateInfo();
+    }
+
+    function updateDateInfo() {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+
+        document.getElementById('display-start-date').textContent = new Date(startDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('display-end-date').textContent = new Date(endDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
 </script>
 {% endblock %}
