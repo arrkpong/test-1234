@@ -7,7 +7,35 @@
 {% endblock %}
 
 {% block style %}
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/detail/styles.css' %}">
+    <style>
+        /* Apply Kanit font to the entire page */
+        body, .container-fluid {
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .bet-buttons .btn {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .bet-summary-header, .bet-history h5, .bet-close-number h5 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .bet-form input, .bet-summary, .bet-list-item, .submit-button {
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .submit-button {
+            font-weight: 500;
+        }
+
+        /* Customize specific elements as needed */
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -19,64 +47,52 @@
                 <!-- Bet Options -->
                 <div class="col-12 col-xl-8">
                     <div class="bet-buttons">
-                        <!-- แถวแรกของปุ่ม -->
-                        <div class="row">
-                          <div class="col">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">สองตัว</button>
-                          </div>
-                          <div class="col">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">สามตัว</button>
-                          </div>
-                          <div class="col">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">เลขวิ่ง</button>
-                          </div>
-                        </div>
-                      
-                        <!-- แถวที่สองของปุ่ม -->
-                        <div class="row">
-                          <div class="col">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">19 ประตู</button>
-                          </div>
-                          <div class="col">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">6 กลับ</button>
-                          </div>
-                          <div class="col">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหน้า</button>
-                          </div>
-                        </div>
-                      
-                        <!-- แถวที่สามของปุ่ม -->
-                        <div class="row">
-                          <div class="col-4">
-                            <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหลัง</button>
-                          </div>
-                        </div>
-                      
-                        <!-- แถวใหม่สำหรับปุ่มที่ซ่อนอยู่ -->
-                        <div class="row">
-                            <div class="col-md-12 d-flex justify-content-between">
-                                <button id="backNumberBtn" class="btn btn-dark w-100 me-2" style="display: none;">กลับเลข</button>
-                                <button id="doubleNumberBtn" class="btn btn-outline-primary w-100 me-2" style="display: none;">เลขเบิ้ล</button>
-                                <button id="tripleNumberBtn" class="btn btn-outline-primary w-100 me-2" style="display: none;">เลขตอง</button>
+                        <!-- Button rows -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">สองตัว</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">สามตัว</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">เลขวิ่ง</button>
                             </div>
                         </div>
-                      </div>
-                      
+                                                <!-- แถวที่สองของปุ่ม -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">19 ประตู</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">6 กลับ</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหน้า</button>
+                            </div>
+                        </div>
+                        <!-- แถวที่สามของปุ่ม -->
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหลัง</button>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Bet Form -->
                     <form id="bet-form" method="POST">
                         {% csrf_token %}
                         <input type="hidden" id="bet-data" name="bet_data">
-                        <div class="d-flex">
+                        <div class="d-flex mb-3">
                             <input type="text" id="bet-number" class="form-control" placeholder="ใส่เลข">
                             <input type="text" id="bet-top" class="form-control mx-1" placeholder="บน">
                             <input type="text" id="bet-bottom" class="form-control" placeholder="ล่าง">
-                            <button type="button" class="btn btn-success ms-1" onclick="addBet()" style="width:200px; height: 40px;">เพิ่ม +</button>
+                            <button type="button" class="btn btn-success ms-1" onclick="addBet()">เพิ่ม +</button>
                         </div>
                     </form>
 
-                     <!-- Selected Bets -->
-                     <div class="bet-summary">
+                    <!-- Selected Bets -->
+                    <div class="bet-summary">
                         <div class="bet-summary-header">{{ lottery.name }}</div>
                         <p>{{ draw_date }}</p>
                         <div class="d-flex justify-content-between mb-2">
@@ -88,14 +104,14 @@
                         </div>
                     </div>
 
-                    <!-- Note -->
-                    <textarea class="form-control" placeholder="ชื่อ"></textarea>
+                    <!-- Note Section -->
+                    <textarea class="form-control" placeholder="เพิ่มหมายเหตุ"></textarea>
 
                     <!-- Submit Button -->
-                    <button class="submit-button my-3" type="submit" onclick="prepareFormSubmission()">สั่งโพย</button>
+                    <button class="btn btn-warning my-3 submit-button" type="submit" onclick="prepareFormSubmission()">สั่งโพย</button>
                 </div>
 
-                <!-- History and Closed Numbers (Unchanged) -->
+                <!-- History and Closed Numbers (unchanged) -->
                 <div class="col-12 col-xl-4">
                     <!-- Bet History -->
                     <div class="bet-history mb-3">
@@ -139,6 +155,7 @@
         </div>
     </div>
 </div>
+
 <script>
     let bets = [];
 
@@ -152,12 +169,15 @@
 
             // Add the bet to the list display
             const betItem = document.createElement('div');
-            betItem.classList.add('bet-list-item', 'd-flex', 'justify-content-between');
+            betItem.classList.add('bet-list-item', 'd-flex', 'justify-content-between', 'mb-1');
             betItem.innerHTML = `
                 <span>เลข: ${number} | บน: ${top} | ล่าง: ${bottom}</span>
                 <button class="btn btn-danger btn-sm" onclick="removeBet(this, ${bets.length - 1})">ลบ</button>
             `;
             document.getElementById('bet-list').appendChild(betItem);
+
+            // Update the bet count
+            document.getElementById('bet-count').innerText = bets.length;
 
             // Clear input fields
             document.getElementById('bet-number').value = '';
@@ -174,6 +194,9 @@
 
         // Remove the bet from the array
         bets.splice(index, 1);
+
+        // Update the bet count
+        document.getElementById('bet-count').innerText = bets.length;
     }
 
     function prepareFormSubmission() {
