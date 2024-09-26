@@ -218,11 +218,11 @@
         font-family: Arial, sans-serif;
         }
         .date-picker-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
         margin-bottom: 10px;
-        }
+    }
         .date-picker {
         display: flex;
         flex-direction: column;
@@ -231,8 +231,8 @@
         .date-picker input {
         padding: 5px;
         font-size: 14px;
-        width: 100%;
-        }
+        width: 130px; /* Set a smaller width for the date input */
+    }
         .quick-buttons {
         display: flex;
         gap: 10px;
@@ -252,10 +252,15 @@
         .info-text span {
         font-weight: bold;
         }
-        .search-button-container {
-        grid-column: span 2;
-        text-align: right;
-        }
+        .search-button {
+        padding: 7px 16px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 30px;
+    }
 
     </style>
 {% endblock %}
@@ -272,9 +277,7 @@
             <label for="to-date">ถึงวันที่</label>
             <input type="date" id="to-date" name="to-date">
         </div>
-        <div class="search-button-container">
-            <button class="search-button">ค้นหา</button>
-        </div>
+        <button class="search-button">ค้นหา</button>
     </div>
     <div class="quick-buttons">
         <button>วันนี้</button>
@@ -288,6 +291,7 @@
         ข้อมูลตั้งแต่วันที่ <span>26 กันยายน 2024</span> ถึง <span>26 กันยายน 2024</span>
     </div>
 </div>
+
 
     
     <table>
