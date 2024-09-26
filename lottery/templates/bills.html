@@ -188,7 +188,6 @@
         color: white;
         border: none;
         cursor: pointer;
-        height: 40px; /* Make the height of the button match the input fields */
         }
         .button-group {
         margin-top: 10px;
@@ -215,23 +214,24 @@
         }
         .search-container {
         max-width: 600px;
-        margin-left: 0; /* Align to the left */
+        margin-left: 0;
         font-family: Arial, sans-serif;
         }
         .date-picker-section {
-        display: flex;
-        align-items: flex-end; /* Aligns the button with the input fields */
-        gap: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
         margin-bottom: 10px;
         }
         .date-picker {
         display: flex;
         flex-direction: column;
         }
+
         .date-picker input {
         padding: 5px;
         font-size: 14px;
-        width: 150px;
+        width: 100%;
         }
         .quick-buttons {
         display: flex;
@@ -252,38 +252,43 @@
         .info-text span {
         font-weight: bold;
         }
-    
+        .search-button-container {
+        grid-column: span 2;
+        text-align: right;
+        }
 
     </style>
 {% endblock %}
 
 {% block content %}
-    <div class="search-container">
-        <h2>ข้อมูลบิล</h2>
-        <div class="date-picker-section">
-            <div class="date-picker">
-                <label for="from-date">ตั้งแต่วันที่</label>
-                <input type="date" id="from-date" name="from-date">
-            </div>
-            <div class="date-picker">
-                <label for="to-date">ถึงวันที่</label>
-                <input type="date" id="to-date" name="to-date">
-            </div>
-        </div>        
+<div class="search-container">
+    <h2>ข้อมูลบิล</h2>
+    <div class="date-picker-section">
+        <div class="date-picker">
+            <label for="from-date">ตั้งแต่วันที่</label>
+            <input type="date" id="from-date" name="from-date">
+        </div>
+        <div class="date-picker">
+            <label for="to-date">ถึงวันที่</label>
+            <input type="date" id="to-date" name="to-date">
+        </div>
+        <div class="search-button-container">
             <button class="search-button">ค้นหา</button>
         </div>
-        <div class="quick-buttons">
-            <button>วันนี้</button>
-            <button>เมื่อวาน</button>
-            <button>สัปดาห์นี้</button>
-            <button>สัปดาห์ที่แล้ว</button>
-            <button>เดือนนี้</button>
-            <button>เดือนที่แล้ว</button>
-        </div>
-        <div class="info-text">
-            ข้อมูลตั้งแต่วันที่ <span>26 กันยายน 2024</span> ถึง <span>26 กันยายน 2024</span>
-        </div>
     </div>
+    <div class="quick-buttons">
+        <button>วันนี้</button>
+        <button>เมื่อวาน</button>
+        <button>สัปดาห์นี้</button>
+        <button>สัปดาห์ที่แล้ว</button>
+        <button>เดือนนี้</button>
+        <button>เดือนที่แล้ว</button>
+    </div>
+    <div class="info-text">
+        ข้อมูลตั้งแต่วันที่ <span>26 กันยายน 2024</span> ถึง <span>26 กันยายน 2024</span>
+    </div>
+</div>
+
     
     <table>
         <thead>
