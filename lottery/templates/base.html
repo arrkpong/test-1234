@@ -16,7 +16,13 @@
     {% block style %}
     
     {% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/detail/styles.css' %}">
     <style>
+                /* Apply Kanit font to the entire page */
+                body, .container-fluid {
+            font-family: 'Kanit', sans-serif;
+        }
         body {
             /* background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%); */
             background-color: #fff;
