@@ -7,8 +7,13 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/index/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Add inline CSS specific for the Bills page */
+        /* Apply Kanit font to the entire page */
+        body {
+            font-family: 'Kanit', sans-serif;
+        }
+
         .filter-section {
             display: flex;
             justify-content: space-between;
@@ -39,50 +44,6 @@
 
         .filter-buttons button {
             padding: 5px 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        .text-green {
-            color: green;
-        }
-
-        .text-red {
-            color: red;
-        }
-
-        .flag {
-            width: 30px;
-            height: 20px;
-        }
-
-        .note {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .note-button {
-            border: none;
-            background-color: transparent;
-            color: red;
-            cursor: pointer;
-        }
-        body {
-            font-family: Arial, sans-serif;
         }
 
         table {
@@ -156,112 +117,132 @@
             padding: 5px 10px;
         }
         .bill-header {
-        font-size: 30px; /* ปรับขนาดตัวอักษร */
-        font-weight: bold; /* ปรับความหนาให้เป็นตัวหนา */
+            font-size: 30px;
+            font-weight: bold;
         }
+
         .search {
-        display: flex;
-        gap: 10px; /* เพิ่มระยะห่างระหว่างกลุ่มฟิลด์ */
-        align-items: flex-end; /* ทำให้ปุ่มค้นหาอยู่แนวเดียวกับฟิลด์ input */
-        font-weight: bold;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            font-weight: bold;
         }
 
         .date-group {
-        margin-bottom: 10px;
+            margin-bottom: 10px;
         }
+
         .date-group label {
-        display: inline-block;
-        width: 100px;
+            display: inline-block;
+            width: 100px;
         }
+
         .date-group input {
-        padding: 5px;
-        font-size: 14px;
+            padding: 5px;
+            font-size: 14px;
         }
 
         label {
-         margin-bottom: 5px; /* เพิ่มระยะห่างระหว่าง label และ input */
+            margin-bottom: 5px;
         }
+
         .search-button {
-        padding: 8px 16px;
-        font-size: 14px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
+
         .button-group {
-        margin-top: 10px;
-        font-weight: bold;
+            margin-top: 10px;
+            font-weight: bold;
         }
+
         .button-group button {
-        padding: 8px 12px;
-        font-size: 14px;
-        margin: 0 5px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
+            padding: 8px 12px;
+            font-size: 14px;
+            margin: 0 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
+
         .date-info {
-        margin-top: 15px;
-        font-size: 14px;
-        color: #666;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
         }
+
         button {
-        padding: 5px 10px;
-        font-size: 16px;
-        cursor: pointer;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
         }
+
         .search-container {
-        max-width: 600px;
-        margin-left: 0;
-        font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin-left: 0;
+            font-family: 'Kanit', sans-serif;
         }
+
         .date-picker-section {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
         .date-picker {
-        display: flex;
-        flex-direction: column;
+            display: flex;
+            flex-direction: column;
         }
 
         .date-picker input {
-        padding: 5px;
-        font-size: 14px;
-        width: 130px; /* Set a smaller width for the date input */
-    }
+            padding: 5px 10px;
+            font-size: 14px;
+            width: 170px;
+        }
+
         .quick-buttons {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
+            display: flex;
+            gap: 2px;
+            margin-bottom: 10px;
         }
+
         .quick-buttons button {
-        padding: 5px 10px;
-        background-color: #f1f1f1;
-        border: 1px solid #ccc;
-        cursor: pointer;
+            padding: 4px 10px;
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 10px;
         }
+
         .info-text {
-        font-size: 14px;
-        margin-top: 10px;
+            font-size: 12px;
+            margin-top: 10px;
         }
 
         .info-text span {
-        font-weight: bold;
+            color: #007bff;
+            font-weight: bold;
         }
-        .search-button {
-        padding: 7px 16px;
-        font-size: 14px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-top: 30px;
-    }
 
+        .search-button {
+            padding: 5px 14px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 30px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
     </style>
 {% endblock %}
 
@@ -280,122 +261,104 @@
         <button class="search-button">ค้นหา</button>
     </div>
     <div class="quick-buttons">
-        <button>วันนี้</button>
-        <button>เมื่อวาน</button>
-        <button>สัปดาห์นี้</button>
-        <button>สัปดาห์ที่แล้ว</button>
-        <button>เดือนนี้</button>
-        <button>เดือนที่แล้ว</button>
+        <button id="today-btn">วันนี้</button>
+        <button id="yesterday-btn">เมื่อวาน</button>
+        <button id="this-week-btn">สัปดาห์นี้</button>
+        <button id="last-week-btn">สัปดาห์ที่แล้ว</button>
+        <button id="this-month-btn">เดือนนี้</button>
+        <button id="last-month-btn">เดือนที่แล้ว</button>
     </div>
     <div class="info-text">
-        ข้อมูลตั้งแต่วันที่ <span>26 กันยายน 2024</span> ถึง <span>26 กันยายน 2024</span>
+        ข้อมูลตั้งแต่วันที่ <span id="display-start-date">26 กันยายน 2024</span> ถึง <span id="display-end-date">26 กันยายน 2024</span>
     </div>
 </div>
 
-
-    
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>สินค้า</th>
-                <th>ประจำวัน</th>
-                <th>เวลา</th>
-                <th>จำนวน</th>
-                <th>ยอดรวม</th>
-                <th>ถูก</th>
-                <th>note</th>
-            </tr>
-        </thead>
-
-    </table>
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>สินค้า</th>
+            <th>ประจำวัน</th>
+            <th>เวลา</th>
+            <th>จำนวน</th>
+            <th>ยอดรวม</th>
+            <th>ถูก</th>
+            <th>note</th>
+        </tr>
+    </thead>
+</table>
 
 <script>
-    // Function to set the current date
-    function setCurrentDate() {
-        const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
-        document.getElementById('start-date').value = today;
-        document.getElementById('end-date').value = today;
-    }
-
-    window.onload = function() {
-    // Set today's date by default
-    setToday();
-    }
-
-    function setToday() {
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('start-date').value = today;
-        document.getElementById('end-date').value = today;
-        updateDateInfo();
-    }
-
-    function setYesterday() {
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        const formattedYesterday = yesterday.toISOString().split('T')[0];
-
-        document.getElementById('start-date').value = formattedYesterday;
-        document.getElementById('end-date').value = formattedYesterday;
-        updateDateInfo();
-    }
-
-    function setLastWeek() {
-        const today = new Date();
-        const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-        const lastDayOfWeek = new Date(today.setDate(today.getDate() + 6));
-
-        document.getElementById('start-date').value = firstDayOfWeek.toISOString().split('T')[0];
-        document.getElementById('end-date').value = lastDayOfWeek.toISOString().split('T')[0];
-        updateDateInfo();
-    }
-
-    function setPreviousWeek() {
-        const today = new Date();
-        const firstDayOfLastWeek = new Date(today.setDate(today.getDate() - today.getDay() - 7));
-        const lastDayOfLastWeek = new Date(today.setDate(today.getDate() + 6));
-
-        document.getElementById('start-date').value = firstDayOfLastWeek.toISOString().split('T')[0];
-        document.getElementById('end-date').value = lastDayOfLastWeek.toISOString().split('T')[0];
-        updateDateInfo();
-    }
-
-    function setThisMonth() {
-        const today = new Date();
-        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-        document.getElementById('start-date').value = firstDayOfMonth.toISOString().split('T')[0];
-        document.getElementById('end-date').value = lastDayOfMonth.toISOString().split('T')[0];
-        updateDateInfo();
-    }
-
-    function setLastMonth() {
-        const today = new Date();
-        const firstDayOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-
-        document.getElementById('start-date').value = firstDayOfLastMonth.toISOString().split('T')[0];
-        document.getElementById('end-date').value = lastDayOfLastMonth.toISOString().split('T')[0];
-        updateDateInfo();
-    }
-
     function updateDateInfo() {
-        const startDate = document.getElementById('start-date').value;
-        const endDate = document.getElementById('end-date').value;
+        const startDate = document.getElementById('from-date').value;
+        const endDate = document.getElementById('to-date').value;
 
         document.getElementById('display-start-date').textContent = new Date(startDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('display-end-date').textContent = new Date(endDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
     }
-    document.addEventListener('DOMContentLoaded', function() {
-    const today = new Date();
-    const todayString = today.toISOString().split('T')[0]; // Convert to 'YYYY-MM-DD' format
 
-    // Set the value of the input fields to today's date
-    document.getElementById('from-date').value = todayString;
-    document.getElementById('to-date').value = todayString;
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+
+        document.getElementById('from-date').value = todayString;
+        document.getElementById('to-date').value = todayString;
+        updateDateInfo();
     });
 
+    // Event listeners for the quick-buttons
+    document.getElementById('today-btn').addEventListener('click', function() {
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        document.getElementById('from-date').value = todayString;
+        document.getElementById('to-date').value = todayString;
+        updateDateInfo();
+    });
+
+    document.getElementById('yesterday-btn').addEventListener('click', function() {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const yesterdayString = yesterday.toISOString().split('T')[0];
+        document.getElementById('from-date').value = yesterdayString;
+        document.getElementById('to-date').value = yesterdayString;
+        updateDateInfo();
+    });
+
+    document.getElementById('this-week-btn').addEventListener('click', function() {
+        const today = new Date();
+        const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Monday
+        const todayString = new Date().toISOString().split('T')[0];
+        document.getElementById('from-date').value = firstDayOfWeek.toISOString().split('T')[0];
+        document.getElementById('to-date').value = todayString;
+        updateDateInfo();
+    });
+
+    document.getElementById('last-week-btn').addEventListener('click', function() {
+        const today = new Date();
+        const lastWeekEnd = new Date(today.setDate(today.getDate() - today.getDay()));
+        const lastWeekStart = new Date(today.setDate(lastWeekEnd.getDate() - 6));
+        document.getElementById('from-date').value = lastWeekStart.toISOString().split('T')[0];
+        document.getElementById('to-date').value = lastWeekEnd.toISOString().split('T')[0];
+        updateDateInfo();
+    });
+
+    document.getElementById('this-month-btn').addEventListener('click', function() {
+        const today = new Date();
+        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const todayString = today.toISOString().split('T')[0];
+        document.getElementById('from-date').value = firstDayOfMonth.toISOString().split('T')[0];
+        document.getElementById('to-date').value = todayString;
+        updateDateInfo();
+    });
+
+    document.getElementById('last-month-btn').addEventListener('click', function() {
+        const today = new Date();
+        const firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        const lastDayLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        document.getElementById('from-date').value = firstDayLastMonth.toISOString().split('T')[0];
+        document.getElementById('to-date').value = lastDayLastMonth.toISOString().split('T')[0];
+        updateDateInfo();
+    });
 </script>
 {% endblock %}
