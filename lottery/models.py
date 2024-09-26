@@ -25,16 +25,21 @@ class Lottery(models.Model):
         verbose_name = 'หวย'
         verbose_name_plural = 'หวย'
 
-class Bet(models.Model):
-    lottery = models.ForeignKey(Lottery, on_delete=models.CASCADE, verbose_name='หวยที่เดิมพัน')
-    number = models.CharField(max_length=10, verbose_name='เลขที่เดิมพัน')
-    top = models.CharField(max_length=10, null=True, blank=True, verbose_name='บน')
-    bottom = models.CharField(max_length=10, null=True, blank=True, verbose_name='ล่าง')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='วันที่เดิมพัน')
+class Bills(models.Model):
+    product = models.CharField(max_length=100, verbose_name='สินค้า')
+    date = models.DateField(verbose_name='ประจำวันที่')
+    time = models.TimeField(verbose_name='เวลา')
+    status = models.CharField(max_length=20, verbose_name='สถานะ')
+    total = models.IntegerField(verbose_name='ยอดรวม')
+    correct = models.IntegerField(verbose_name='ถูก', default=0)
+    remaining = models.IntegerField(verbose_name='คงเหลือ', default=0)
+    note = models.TextField(null=True, blank=True, verbose_name='note')
+    
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='วันที่สร้าง')
 
     def __str__(self):
-        return f"Bet {self.number} on {self.lottery.name}"
+        return f"Bill {self.product} on {self.date}"
 
     class Meta:
-        verbose_name = 'โพยเดิมพัน'
-        verbose_name_plural = 'โพยเดิมพัน'
+        verbose_name = 'บิล'
+        verbose_name_plural = 'บิล'

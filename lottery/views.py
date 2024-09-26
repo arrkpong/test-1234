@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
-from lottery.models import Bet, Lottery, LotteryType
+from lottery.models import Bills, Lottery, LotteryType
 from datetime import datetime
 import json
 import pytz
