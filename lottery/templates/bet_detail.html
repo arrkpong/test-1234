@@ -3,48 +3,59 @@
 {% load static %}
 
 {% block title %}
-    <title>Bet Detail</title>
+<title>Bet Detail</title>
 {% endblock %}
 
 {% block style %}
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/detail/styles.css' %}">
-    <style>
-        /* Apply Kanit font to the entire page */
-        body, .container-fluid {
-            font-family: 'Kanit', sans-serif;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/detail/styles.css' %}">
+<style>
+    /* Apply Kanit font to the entire page */
+    body,
+    .container-fluid {
+        font-family: 'Kanit', sans-serif;
+    }
 
-        .bet-buttons .btn {
-            font-size: 16px;
-            font-weight: 500;
-        }
+    .bet-buttons .btn {
+        font-size: 16px;
+        font-weight: 500;
+    }
 
-        .bet-summary-header, .bet-history h5, .bet-close-number h5 {
-            font-size: 18px;
-            font-weight: 600;
-        }
+    .bet-summary-header,
+    .bet-history h5,
+    .bet-close-number h5 {
+        font-size: 18px;
+        font-weight: 600;
+    }
 
-        .bet-form input, .bet-summary, .bet-list-item, .submit-button {
-            font-size: 16px;
-            font-weight: 400;
-        }
+    .bet-form input,
+    .bet-summary,
+    .bet-list-item,
+    .submit-button {
+        font-size: 16px;
+        font-weight: 400;
+    }
 
-        .submit-button {
-            font-weight: 500;
-        }
+    .submit-button {
+        font-weight: 500;
+    }
 
-        .btn-primary{
-            background-color: rgb(60 141 188);
-            border: none;
-        }
+    .btn-primary {
+        background-color: rgb(60 141 188);
+        border: none;
+    }
 
-        .btn-primary:hover{
-            background-color: rgb(54 127 169);
-        }
+    .btn-primary:hover {
+        background-color: rgb(54 127 169);
+    }
 
-        /* Customize specific elements as needed */
-    </style>
+    .btn-secondary {
+        background-color: rgb(0 153 153);
+        border: none;
+    }
+
+    /* Customize specific elements as needed */
+</style>
 {% endblock %}
 
 {% block content %}
@@ -59,33 +70,56 @@
                         <!-- Button rows -->
                         <div class="row mb-2">
                             <div class="col">
-                                <button class="btn btn-primary w-100 rounded-1" onclick="toggleButton(this)">สองตัว</button>
+                                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+                                <label class="btn btn-primary w-100" for="option1">สองตัว</label>
                             </div>
                             <div class="col">
-                                <button class="btn btn-primary w-100 rounded-1" onclick="toggleButton(this)">สามตัว</button>
+                                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                                <label class="btn btn-primary w-100" for="option2">สามตัว</label>
                             </div>
                             <div class="col">
-                                <button class="btn btn-primary w-100 rounded-1" onclick="toggleButton(this)">เลขวิ่ง</button>
+                                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+                                <label class="btn btn-primary w-100" for="option3">เลขวิ่ง</label>
                             </div>
                         </div>
                         <!-- แถวที่สองของปุ่ม -->
                         <div class="row mb-2">
                             <div class="col">
-                                <button class="btn btn-primary w-100 rounded-1" onclick="toggleButton(this)">19 ประตู</button>
+                                <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+                                <label class="btn btn-primary w-100" for="option4">19ประตู</label>
                             </div>
                             <div class="col">
-                                <button class="btn btn-primary w-100 rounded-1" onclick="toggleButton(this)">6 กลับ</button>
+                                <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
+                                <label class="btn btn-primary w-100" for="option5">6กลับ</label>
                             </div>
                             <div class="col">
-                                <button class="btn btn-primary w-100 rounded-1" onclick="toggleButton(this)">รูดหน้า</button>
+                                <input type="radio" class="btn-check" name="options" id="option6" autocomplete="off">
+                                <label class="btn btn-primary w-100" for="option6">รูดหน้า</label>
                             </div>
                         </div>
                         <!-- แถวที่สามของปุ่ม -->
                         <div class="row mb-2">
                             <div class="col-4">
-                                <button class="btn btn-primary w-100" onclick="toggleButton(this)">รูดหลัง</button>
+                                <input type="radio" class="btn-check" name="options" id="option7" autocomplete="off">
+                                <label class="btn btn-primary w-100" for="option7">รูดหลัง</label>
                             </div>
                         </div>
+                        <div class="row mb-2">
+                            <div class="col-6" id="back-number-btn">
+                                <button type="button" class="btn btn-secondary w-100">กลับเลข</button>
+                            </div>
+                            <div class="col-6" id="double-number-btn">
+                                <button type="button" class="btn btn-secondary w-100">เลขเบิ้ล</button>
+                            </div>
+                            <div class="col-6 d-none" id="triple-number-btn">
+                                <button type="button" class="btn btn-secondary w-100">กลับตอง</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container d-flex justify-content-between border my-3 bg-white py-2 align-items-center rounded">
+                        <p>จำนวน 0 รายการ</p>
+                        <button class="btn btn-danger">ลบ</button>
                     </div>
 
                     <!-- Bet Form -->
@@ -117,7 +151,8 @@
                     <textarea class="form-control" placeholder="เพิ่มหมายเหตุ"></textarea>
 
                     <!-- Submit Button -->
-                    <button class="btn btn-warning my-3 submit-button" type="submit" onclick="prepareFormSubmission()">สั่งโพย</button>
+                    <button class="btn btn-warning my-3 submit-button" type="submit"
+                        onclick="prepareFormSubmission()">สั่งโพย</button>
                 </div>
 
                 <!-- History and Closed Numbers (unchanged) -->
@@ -211,6 +246,30 @@
     function prepareFormSubmission() {
         const betData = JSON.stringify(bets);
         document.getElementById('bet-data').value = betData;
+    }
+
+    //2-3ตัว
+    document.querySelectorAll('input[name="options"]').forEach(option => {
+        option.addEventListener('change', showOrHideButtons);
+    });
+
+    function showOrHideButtons() {
+        const selectedOption = document.querySelector('input[name="options"]:checked').id;
+
+        // ซ่อนปุ่มทั้งหมดก่อน
+        document.getElementById('back-number-btn').classList.add('d-none');
+        document.getElementById('double-number-btn').classList.add('d-none');
+        document.getElementById('triple-number-btn').classList.add('d-none');
+
+        if (selectedOption === 'option1') {
+            // แสดงปุ่ม กลับเลข และ เลขเบิ้ล
+            document.getElementById('back-number-btn').classList.remove('d-none');
+            document.getElementById('double-number-btn').classList.remove('d-none');
+        } else if (selectedOption === 'option2') {
+            // แสดงปุ่ม กลับเลข และ เลขตอง
+            document.getElementById('back-number-btn').classList.remove('d-none');
+            document.getElementById('triple-number-btn').classList.remove('d-none');
+        }
     }
 </script>
 {% endblock %}
