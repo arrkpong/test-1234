@@ -117,9 +117,14 @@
                         </div>
                     </div>
 
-                    <div class="container d-flex justify-content-between border my-3 bg-white py-2 align-items-center rounded">
-                        <p>จำนวน 0 รายการ</p>
-                        <button class="btn btn-danger">ลบ</button>
+                    <div class="container border my-3 bg-white py-2">
+                        <div class="d-flex justify-content-between align-items-center rounded">
+                            <span>จำนวน <span id="bet-list-summary">0</span> รายการ</span>
+                            <button class="btn btn-danger" onclick="clearBets()">ลบ</button>
+                        </div>
+                        <div id="bet-list-number" class="bet-list-number d-flex flex-wrap">
+                            
+                        </div>
                     </div>
 
                     <!-- Bet Form -->
@@ -271,5 +276,121 @@
             document.getElementById('triple-number-btn').classList.remove('d-none');
         }
     }
+
+    // input
+    let betsNumber = [];
+    document.getElementById('bet-number').addEventListener('input', function() {
+    let input = this.value.trim();
+    let optionSelected = document.querySelector('input[name="options"]:checked').id;
+
+    if (optionSelected === 'option1') {
+        // สองตัว: Handle two-digit bet
+        processTwoDigitBet(input);
+    } else if (optionSelected === 'option2') {
+        // สามตัว: Handle three-digit bet
+        processThreeDigitBet(input);
+    } else if (optionSelected === 'option3') {
+        // เลขวิ่ง: Handle single-digit bet
+        processSingleDigitBet(input);
+    } else if (optionSelected === 'option4') {
+        // 19ประตู: Handle 19-door bet
+        process19DoorsBet(input);
+    } else if (optionSelected === 'option5') {
+        // 6กลับ: Handle six-permutation bet
+        processSixPermutations(input);
+    } else if (optionSelected === 'option6') {
+        // รูดหน้า: Handle front sweep
+        processFrontSweep(input);
+    } else if (optionSelected === 'option7') {
+        // รูดหลัง: Handle back sweep
+        processBackSweep(input);
+    }
+});
+
+// Function for processing two-digit bet
+function processTwoDigitBet(input) {
+    if (input.length >= 2) {
+        let numbers = input.split('/').filter(num => num.length === 2);
+        numbers.forEach(num => addBetToList(num));
+    }
+}
+
+// Function for processing three-digit bet
+function processThreeDigitBet(input) {
+    if (input.length >= 3) {
+        let numbers = input.split('/').filter(num => num.length === 3);
+        numbers.forEach(num => addBetToList(num));
+    }
+}
+
+// Function for processing single-digit bet (เลขวิ่ง)
+function processSingleDigitBet(input) {
+    if (input.length === 1) {
+        addBetToList(input);
+    }
+}
+
+// Function for processing 19 doors (19ประตู)
+function process19DoorsBet(input) {
+    if (input.length === 1) {
+        let doors = generate19Doors(input);
+        doors.forEach(num => addBetToList(num));
+    }
+}
+
+// Generate 19 doors for a given single digit
+function generate19Doors(digit) {
+    let doors = [];
+    for (let i = 0; i <= 9; i++) {
+        doors.push(`${digit}${i}`, `${i}${digit}`);
+    }
+    return [...new Set(doors)]; // Ensure no duplicates
+}
+
+// Add bet to list display
+function addBetToList(number) {
+    // Create a new button item for each number and add to list
+    const betButton = document.createElement('button');
+    betButton.classList.add('btn', 'btn-primary', 'mx-1', 'my-1');
+    betButton.innerText = number;
+
+    // Add an event listener to remove the bet when clicked
+    betButton.onclick = () => removeBet(betButton, number);
+
+    // Append the button to the #bet-list
+    document.getElementById('bet-list-number').appendChild(betButton);
+
+    // Add the bet to the array
+    betsNumber.push(number);
+    
+    // Update the bet count display
+    document.getElementById('bet-list-summary').innerText = betsNumber.length;
+
+    document.getElementById('bet-number').value = '';
+}
+
+// Remove bet from list
+function removeBet(button, number) {
+    // Remove button from the DOM
+    button.remove();
+
+    // Remove the bet from the array
+    betsNumber = betsNumber.filter(bet => bet !== number);
+
+    // Update the bet count display
+    document.getElementById('bet-list-summary').innerText = betsNumber.length;
+}
+
+function clearBets() {
+    // ลบเลขทั้งหมดจาก array
+    betsNumber = [];
+
+    // ล้างรายการที่แสดงอยู่
+    document.getElementById('bet-list-number').innerHTML = '';
+
+    // อัปเดตจำนวนรายการ
+    document.getElementById('bet-list-summary').innerText = `0`;
+}
+
 </script>
 {% endblock %}
