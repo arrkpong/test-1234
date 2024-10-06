@@ -26,7 +26,7 @@ class LoginRequiredMixin:
             return redirect('/login/')  # Redirect to login page if user is not authenticated
         return super().dispatch(request, *args, **kwargs)
 
-class RegisterView(View):
+class RegisterView(LoginRequiredMixin, View):
     template_name = 'register.html'
 
     def get(self, request):
