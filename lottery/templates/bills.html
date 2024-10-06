@@ -2,248 +2,288 @@
 {% load static %}
 
 {% block title %}
-    <title>Bills</title>
+<title>Bills</title>
 {% endblock %}
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'css/index/styles.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Apply Kanit font to the entire page */
-        body {
-            font-family: 'Kanit', sans-serif;
-        }
+<link rel="stylesheet" href="{% static 'css/index/styles.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    /* Apply Kanit font to the entire page */
+    body {
+        font-family: 'Kanit', sans-serif;
+    }
 
-        .filter-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
 
-        .search {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
-            text-align: left;
-        }
+    .search {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 20px auto;
+        text-align: left;
+    }
 
-        .filter-section .search input {
-            margin-right: 10px;
-            padding: 5px;
-        }
+    .filter-section .search input {
+        margin-right: 10px;
+        padding: 5px;
+    }
 
-        .filter-section .search button {
-            padding: 5px 15px;
-        }
+    .filter-section .search button {
+        padding: 5px 15px;
+    }
 
-        .filter-section .filter-buttons {
-            display: flex;
-            gap: 10px;
-        }
+    .filter-section .filter-buttons {
+        display: flex;
+        gap: 10px;
+    }
 
-        .filter-buttons button {
-            padding: 5px 10px;
-        }
+    .filter-buttons button {
+        padding: 5px 10px;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
 
-        th {
-            background-color: #f4f4f4;
-        }
+    th {
+        background-color: #f4f4f4;
+    }
 
-        .text-green {
-            color: green;
-        }
+    .text-green {
+        color: green;
+    }
 
-        .text-red {
-            color: red;
-        }
+    .text-red {
+        color: red;
+    }
 
-        .flag {
-            width: 30px;
-            height: 20px;
-        }
+    .flag {
+        width: 30px;
+        height: 20px;
+    }
 
-        .note {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .note {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .note-button {
-            border: none;
-            background-color: transparent;
-            color: red;
-            cursor: pointer;
-        }
+    .note-button {
+        border: none;
+        background-color: transparent;
+        color: red;
+        cursor: pointer;
+    }
 
-        .filter-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
 
-        .filter-section .search {
-            display: flex;
-            align-items: center;
-        }
+    .filter-section .search {
+        display: flex;
+        align-items: center;
+    }
 
-        .filter-section .search input {
-            margin-right: 10px;
-            padding: 5px;
-        }
+    .filter-section .search input {
+        margin-right: 10px;
+        padding: 5px;
+    }
 
-        .filter-section .search button {
-            padding: 5px 15px;
-        }
+    .filter-section .search button {
+        padding: 5px 15px;
+    }
 
-        .filter-section .filter-buttons {
-            display: flex;
-            gap: 10px;
-        }
+    .filter-section .filter-buttons {
+        display: flex;
+        gap: 10px;
+    }
 
-        .filter-buttons button {
-            padding: 5px 10px;
-        }
-        .bill-header {
-            font-size: 30px;
-            font-weight: bold;
-        }
+    .filter-buttons button {
+        padding: 5px 10px;
+    }
 
-        .search {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-            font-weight: bold;
-        }
+    .bill-header {
+        font-size: 30px;
+        font-weight: bold;
+    }
 
-        .date-group {
-            margin-bottom: 10px;
-        }
+    .search {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+        font-weight: bold;
+    }
 
-        .date-group label {
-            display: inline-block;
-            width: 100px;
-        }
+    .date-group {
+        margin-bottom: 10px;
+    }
 
-        .date-group input {
-            padding: 5px;
-            font-size: 14px;
-        }
+    .date-group label {
+        display: inline-block;
+        width: 100px;
+    }
 
-        label {
-            margin-bottom: 5px;
-        }
+    .date-group input {
+        padding: 5px;
+        font-size: 14px;
+    }
 
-        .search-button {
-            padding: 8px 16px;
-            font-size: 14px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    label {
+        margin-bottom: 5px;
+    }
 
-        .button-group {
-            margin-top: 10px;
-            font-weight: bold;
-        }
+    .search-button {
+        padding: 8px 16px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
 
-        .button-group button {
-            padding: 8px 12px;
-            font-size: 14px;
-            margin: 0 5px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    .button-group {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 10px;
+    }
 
-        .date-info {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #666;
-        }
+    .button-group button {
+        padding: 4px 10px;
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 10px;
+    }
 
-        button {
-            padding: 5px 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    .date-info {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #666;
+    }
 
-        .search-container {
-            max-width: 600px;
-            margin-left: 0;
-            font-family: 'Kanit', sans-serif;
-        }
+    button {
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-        .date-picker-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
+    .search-container {
+        max-width: 600px;
+        margin-left: 0;
+        font-family: 'Kanit', sans-serif;
+    }
 
-        .date-picker {
-            display: flex;
-            flex-direction: column;
-        }
+    .date-picker-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
 
-        .date-picker input {
-            padding: 5px 10px;
-            font-size: 14px;
-            width: 170px;
-        }
+    .date-picker {
+        display: flex;
+        flex-direction: column;
+    }
 
-        .quick-buttons {
-            display: flex;
-            gap: 2px;
-            margin-bottom: 10px;
-        }
+    .date-picker input {
+        padding: 5px 10px;
+        font-size: 14px;
+        width: 170px;
+    }
 
-        .quick-buttons button {
-            padding: 4px 10px;
-            background-color: #007bff;
-            color: white;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 10px;
-        }
+    .quick-buttons {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 10px;
+    }
 
-        .info-text {
-            font-size: 12px;
-            margin-top: 10px;
-        }
+    .quick-buttons button {
+        padding: 4px 10px;
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 10px;
+    }
 
-        .info-text span {
-            color: #007bff;
-            font-weight: bold;
-        }
+    .info-text {
+        font-size: 12px;
+        margin-top: 10px;
+    }
 
-        .search-button {
-            padding: 5px 14px;
-            font-size: 14px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 30px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-    </style>
+    .info-text span {
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .search-button {
+        padding: 5px 14px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 30px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .action-button {
+        background-color: #ffa500; /* Orange color */
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-left: 5px;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 30px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .search-notes input {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        flex-grow: 1;
+    }
+
+    .note-button {
+        background-color: transparent;
+        border: none;
+        color: red;
+        cursor: pointer;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -271,9 +311,24 @@
     <div class="info-text">
         ข้อมูลตั้งแต่วันที่ <span id="display-start-date">26 กันยายน 2024</span> ถึง <span id="display-end-date">26 กันยายน 2024</span>
     </div>
+
+    <!-- Add the orange button section here -->
+    <div class="button-group" style="display: flex; justify-content: flex-end; margin-left: 700px; width: 100%;">
+        <button class="action-button">ทั้งหมด</button>
+        <button class="action-button">บิลได้</button>
+        <button class="action-button">บิลเสีย</button>
+        <button class="action-button">รอผล</button>
+        <button class="action-button">บิลยกเลิก</button>
+    </div>    
+
+    <!-- Add a search bar to search notes -->
+    <div class="search-notes" style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 2px; margin-left: 1096px; width: 100%;">
+        <label for="search-note" style="margin-bottom: px;">ค้นหา</label>
+        <input type="text" id="search-note"style="padding: 6px; font-size: 15px; width: 200px;">
+    </div>   
 </div>
 
-<table>
+<table id="bill-table">
     <thead>
         <tr>
             <th>#</th>
@@ -288,6 +343,21 @@
             <th></th>
         </tr>
     </thead>
+    <tbody>
+        <!-- Sample data row -->
+        <tr>
+            <td>#6707c2e77057e2993b569e0</td>
+            <td>ดาวน์โหลด VIP</td>
+            <td>06 ตุลาคม 2024</td>
+            <td>2024-10-07 00:03:35</td>
+            <td><span class="text-blue">รอผล</span></td>
+            <td><span class="text-green">-1,065</span></td>
+            <td>0</td>
+            <td><span class="text-red">-1,065</span></td>
+            <td>ณรงค์ พันล่า 3 ตัวไม่รับ</td>
+            <td><button class="note-button">ลบ</button></td>
+        </tr>
+    </tbody>
 </table>
 
 <script>
@@ -361,6 +431,21 @@
         document.getElementById('from-date').value = firstDayLastMonth.toISOString().split('T')[0];
         document.getElementById('to-date').value = lastDayLastMonth.toISOString().split('T')[0];
         updateDateInfo();
+    });
+
+    // Search functionality
+    document.getElementById('search-note').addEventListener('input', function() {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#bill-table tbody tr');
+
+        rows.forEach(row => {
+            const noteText = row.querySelector('td:nth-child(9)').textContent.toLowerCase();
+            if (noteText.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     });
 </script>
 {% endblock %}
