@@ -149,20 +149,20 @@
     }
 
     .search-button {
-        padding: 8px 16px;
-        font-size: 14px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
+    padding: 7px 16px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 27px; /* Adjust to fine-tune alignment if necessary */
+    border-radius: 5px;
     }
-
     .button-group {
         display: flex;
         gap: 2px;
         margin-bottom: 10px;
     }
-
     .button-group button {
         padding: 4px 10px;
         background-color: #007bff;
@@ -172,7 +172,19 @@
         border-radius: 5px;
         font-size: 10px;
     }
-
+    .button-orangegroup {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 10px;
+    }
+    .button-orangegroup button {
+    padding: 4px 10px;
+    background-color: rgba(247, 103, 7, 1); /* Corrected RGBA value */
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 10px;
+    }
     .date-info {
         margin-top: 15px;
         font-size: 14px;
@@ -234,18 +246,6 @@
         color: #007bff;
         font-weight: bold;
     }
-
-    .search-button {
-        padding: 5px 14px;
-        font-size: 14px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-top: 30px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
     .action-button {
         background-color: #ffa500; /* Orange color */
         color: white;
@@ -256,19 +256,6 @@
         border-radius: 5px;
         margin-left: 5px;
     }
-
-    .search-button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-top: 30px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-
     .search-notes input {
         padding: 10px;
         font-size: 12px;
@@ -344,7 +331,7 @@
     </div>
 
     <!-- Add the orange button section here -->
-    <div class="button-group" style="display: flex; justify-content: flex-end; margin-left: 700px; width: 100%; height: 20;">
+    <div class="button-orangegroup" style="display: flex; justify-content: flex-end; margin-left: 700px; width: 100%; height: 20;">
         <button class="action-button">ทั้งหมด</button>
         <button class="action-button">บิลได้</button>
         <button class="action-button">บิลเสีย</button>
