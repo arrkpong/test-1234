@@ -7,8 +7,10 @@ from lottery.models import Bills, Lottery, LotteryType
 from datetime import datetime
 import json
 import pytz
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class LotteryDetailView(TemplateView):
+class LotteryDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'bet_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -28,6 +30,7 @@ class LotteryDetailView(TemplateView):
         context['lottery'] = lottery
         context['draw_date'] = formatted_date
         return context
+
 
     def post(self, request, *args, **kwargs):
         lottery_id = self.kwargs.get('pk')
@@ -53,7 +56,7 @@ class LotteryDetailView(TemplateView):
 
 
     
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
     template_name = 'index.html'
 
     def get(self, request):
@@ -70,5 +73,5 @@ class IndexView(View):
         }
         return render(request, self.template_name, context)
     
-class LotterryBills(TemplateView):
+class LotterryBills(LoginRequiredMixin, TemplateView):
     template_name = 'bills.html'
