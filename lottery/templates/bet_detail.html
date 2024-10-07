@@ -64,6 +64,9 @@
         background-color: rgba(247,103,7,255);
         border: none;
     }
+    #triple-number-btn {
+    display: none;
+    }
 
     /* Customize specific elements as needed */
 </style>
@@ -122,8 +125,8 @@
                             <div class="col-6" id="double-number-btn">
                                 <button type="button" class="btn btn-secondary w-100">เลขเบิ้ล</button>
                             </div>
-                            <div class="col-6 d-none" id="triple-number-btn">
-                                <button type="button" class="btn btn-secondary w-100">กลับตอง</button>
+                            <div class="col-6" id="triple-number-btn">
+                                <button type="button" class="btn btn-secondary w-100">เลขตอง</button>
                             </div>
                         </div>
                     </div>
@@ -158,6 +161,11 @@
                             <div class="form-group" style="width: 200px; margin-right: 10px;">
                                 <label for="bet-bottom">ล่าง</label>
                                 <input type="text" id="bet-bottom" class="form-control" style="border-radius: 5px; height: 38px;">
+                            </div>
+
+                            <div class="form-group" style="width: 200px; margin-right: 10px;">
+                                <label for="bet-tod">โต๊ด</label>
+                                <input type="text" id="bet-tod" class="form-control" style="border-radius: 5px; height: 38px;">
                             </div>
                         
                             <div>
@@ -243,53 +251,83 @@
 </div>
 
 <script>
-    document.querySelector('button[onclick="addBet()"]').addEventListener('click', function() {
-    // Get the bet-top and bet-bottom values
-    const betTop = parseFloat(document.getElementById('bet-top').value) || 0;
-    const betBottom = parseFloat(document.getElementById('bet-bottom').value) || 0;
+document.querySelector('button[onclick="addBet()"]').addEventListener('click', function() {
+    // Get the bet-top, bet-bottom, and bet-tod values
+    const betTop = document.getElementById('bet-top').value.trim();
+    const betBottom = document.getElementById('bet-bottom').value.trim();
+    const betTod = document.getElementById('bet-tod').value.trim(); // bet-tod field
+
+    // Get the selected option
+    const selectedOption = document.querySelector('input[name="options"]:checked').id;
 
     // Get the length of betsNumber array
     const totalBets = betsNumber.length;
 
-    // Calculate the total based on bet-top and bet-bottom
-    const totalAmount = (totalBets * betTop) + (totalBets * betBottom);
+    // Determine the type of bet based on the length of the betsNumber
+    let optionLabel;
+    if (betsNumber.join('').length === 2) {
+        optionLabel = "2 ตัว ";
+    } else if (betsNumber.join('').length === 3) {
+        optionLabel = "3 ตัว ";
+    } else if (betsNumber.join('').length === 1) {
+        optionLabel = "วิ่ง ";
+    } else {
+        optionLabel = "อื่นๆ ";
+    }
+
+    // Build the display text depending on betTop, betBottom, and betTod values
+    let betDescription = '';
+    if (selectedOption === 'option2') { // If Option 2 is selected (สามตัว)
+        // Check for betTop and betTod values only
+        if (betTop && !betTod) {
+            betDescription = `${optionLabel}บน: ${betTop}`;
+        } else if (!betTop && betTod) {
+            betDescription = `${optionLabel}โต๊ด: ${betTod}`;
+        } else if (betTop && betTod) {
+            betDescription = `${optionLabel}บน x โต๊ด: ${betTop} x ${betTod}`;
+        } else {
+            betDescription = 'กรุณากรอกอย่างน้อยหนึ่งค่า';
+        }
+    } else { // For other options
+        if (betTop && !betBottom) {
+            betDescription = `${optionLabel}บน: ${betTop}`;
+        } else if (!betTop && betBottom) {
+            betDescription = `${optionLabel}ล่าง: ${betBottom}`;
+        } else if (betTop && betBottom) {
+            betDescription = `${optionLabel}บน x ล่าง: ${betTop} x ${betBottom}`;
+        } else {
+            betDescription = 'กรุณากรอกอย่างน้อยหนึ่งค่า';
+        }
+    }
 
     // Add the result to the id="bet-list"
     const betItem = document.createElement('div');
     betItem.classList.add('bet-item'); // Add a class to the item for easy reference
 
     betItem.innerHTML = `
-        <div class="d-flex justify-content-between fs-5 text-warning">
-            <span>บน: ${betTop} | ล่าง: ${betBottom}</span>
+        <div class="d-flex justify-content-between fs-5 text-warning" style="line-height: 1.2;">
+            <span style="font-size: 16px; color: #f39c12;">${betDescription}</span>
             <button class="btn btn-danger btn-sm ml-2 remove-bet">
                 <i class="fas fa-trash-alt"></i> <!-- Icon for delete -->
             </button>
         </div>
-        <div class='fs-5 mb-2'>
-            <span>${betsNumber.join(', ')}</span>
+        <div class='fs-5' style="line-height: 0.5;">
+            <span style="font-size: 16px;">${betsNumber.join(', ')}</span>
         </div>
     `;
 
     document.getElementById('bet-list').appendChild(betItem);
 
-    // Update the total displayed in the footer
-    const currentTotal = parseFloat(document.getElementById('total-amount').textContent) || 0;
-    const newTotal = currentTotal + totalAmount;
-    document.getElementById('total-amount').textContent = `${newTotal}฿`;
-
-    // Clear the input fields after adding
+    // Clear the form after adding the bet
     clearForm();
 
     // Add the remove functionality
     betItem.querySelector('.remove-bet').addEventListener('click', function() {
         const itemToRemove = this.closest('.bet-item'); // Get the closest parent with the class bet-item
         itemToRemove.remove(); // Remove that specific item from the DOM
-
-        // Update the total amount after removal
-        const updatedTotal = parseFloat(document.getElementById('total-amount').textContent) - totalAmount;
-        document.getElementById('total-amount').textContent = `${updatedTotal}฿`;
     });
 });
+
 function removeBet(betItem, totalAmount) {
     // ลบ betItem ออกจาก DOM
     betItem.remove();
@@ -446,7 +484,6 @@ function generateBackSweep(digit) {
 
 // Add bet to list display
 function addBetToList(number) {
-    // Create a new button item for each number and add to list
     const betButton = document.createElement('button');
     betButton.classList.add('btn', 'btn-primary', 'mx-1', 'my-1');
     betButton.innerText = number;
@@ -507,7 +544,11 @@ function clearBets() {
     // อัปเดตจำนวนรายการ
     document.getElementById('bet-list-summary').innerText = `0`;
 }
-document.querySelectorAll('input[name="options"]').forEach(option => {
+    // ตัวอย่างการผูกฟังก์ชันกับปุ่ม "เลขเบิ้ล" และ "กลับตอง"
+    document.getElementById('double-number-btn').querySelector('button').addEventListener('click', addDoubleNumbers);
+    document.getElementById('triple-number-btn').querySelector('button').addEventListener('click', addTripleNumbers);
+
+    document.querySelectorAll('input[name="options"]').forEach(option => {
     option.addEventListener('change', function() {
         const selectedOption = document.querySelector('input[name="options"]:checked').id;
 
@@ -518,14 +559,36 @@ document.querySelectorAll('input[name="options"]').forEach(option => {
             document.getElementById('bet-bottom').parentElement.style.display = 'none'; // ซ่อนกล่องล่าง
             document.getElementById('back-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับเลข
             document.getElementById('double-number-btn').style.display = 'none'; // ซ่อนปุ่มเลขเบิ้ล
-            
+            document.getElementById('triple-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับตอง
+            document.getElementById('bet-tod').parentElement.style.display = 'none'; // แสดงกล่องโต๊ด
+
             // ปรับขนาดของกล่องบน
-            betTopElement.style.width = '415px'; // หรือขนาดที่คุณต้องการ
+            betTopElement.style.width = '410px'; // หรือขนาดที่คุณต้องการ
         } else if (selectedOption === 'option3' || selectedOption === 'option4' || 
                    selectedOption === 'option6' || selectedOption === 'option7') {
             document.getElementById('back-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับเลข
             document.getElementById('double-number-btn').style.display = 'none'; // ซ่อนปุ่มเลขเบิ้ล
+            document.getElementById('triple-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับตอง
             document.getElementById('bet-bottom').parentElement.style.display = 'block'; // แสดงกล่องล่าง
+            document.getElementById('bet-tod').parentElement.style.display = 'none'; // แสดงกล่องโต๊ด
+
+            // คืนค่าขนาดกล่องบน
+            betTopElement.style.width = '200px'; // ขนาดเดิม
+        } else if (selectedOption === 'option2') { // สามตัว
+            document.getElementById('triple-number-btn').style.display = 'block'; // แสดงปุ่มกลับตอง
+            document.getElementById('bet-bottom').parentElement.style.display = 'none'; // แสดงกล่องล่าง
+            document.getElementById('bet-tod').parentElement.style.display = 'block'; // แสดงกล่องล่าง
+            document.getElementById('back-number-btn').style.display = 'block'; // แสดงปุ่มกลับเลข
+            document.getElementById('double-number-btn').style.display = 'none'; // ซ่อนปุ่มเลขเบิ้ล
+
+            // คืนค่าขนาดกล่องบน
+            betTopElement.style.width = '200px'; // ขนาดเดิม
+        } else if (selectedOption === 'option1') { // สองตัว
+            document.getElementById('triple-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับตอง
+            document.getElementById('bet-bottom').parentElement.style.display = 'block'; // แสดงกล่องล่าง
+            document.getElementById('back-number-btn').style.display = 'block'; // แสดงปุ่มกลับเลข
+            document.getElementById('double-number-btn').style.display = 'block'; // แสดงปุ่มเลขเบิ้ล
+            document.getElementById('bet-tod').parentElement.style.display = 'none'; // แสดงกล่องล่าง
 
             // คืนค่าขนาดกล่องบน
             betTopElement.style.width = '200px'; // ขนาดเดิม
@@ -533,6 +596,7 @@ document.querySelectorAll('input[name="options"]').forEach(option => {
             document.getElementById('bet-bottom').parentElement.style.display = 'block'; // แสดงกล่องล่าง
             document.getElementById('back-number-btn').style.display = 'block'; // แสดงปุ่มกลับเลข
             document.getElementById('double-number-btn').style.display = 'block'; // แสดงปุ่มเลขเบิ้ล
+            document.getElementById('triple-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับตอง
 
             // คืนค่าขนาดกล่องบน
             betTopElement.style.width = '200px'; // ขนาดเดิม
@@ -540,16 +604,30 @@ document.querySelectorAll('input[name="options"]').forEach(option => {
     });
 });
 
+
 // ตรวจสอบสถานะเริ่มต้นเมื่อโหลดหน้า
 document.addEventListener('DOMContentLoaded', function() {
     const selectedOption = document.querySelector('input[name="options"]:checked').id;
+    
     const betTopElement = document.getElementById('bet-top').parentElement;
+    const betTodElement = document.getElementById('bet-tod').parentElement; // เพิ่ม bet-tod
 
-    if (selectedOption === 'option5') { // 6กลับ
+    // ซ่อนกล่อง bet-tod ทุกครั้งที่โหลดหน้า ยกเว้น option2
+    if (selectedOption === 'option2') { // สามตัว
+        document.getElementById('triple-number-btn').style.display = 'block'; // แสดงปุ่มเลขตอง
         document.getElementById('bet-bottom').parentElement.style.display = 'none'; // ซ่อนกล่องล่าง
+        document.getElementById('bet-tod').parentElement.style.display = 'block'; // แสดงกล่อง bet-tod
+        document.getElementById('back-number-btn').style.display = 'block'; // แสดงปุ่มกลับเลข
+        document.getElementById('double-number-btn').style.display = 'none'; // ซ่อนปุ่มเลขเบิ้ล
+
+        // คืนค่าขนาดกล่องบน
+        betTopElement.style.width = '200px'; // ขนาดเดิม
+    } else if (selectedOption === 'option5') { // 6กลับ
+        document.getElementById('bet-bottom').parentElement.style.display = 'none'; // ซ่อนกล่องล่าง
+        document.getElementById('bet-tod').parentElement.style.display = 'none'; // ซ่อนกล่อง bet-tod
         document.getElementById('back-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับเลข
         document.getElementById('double-number-btn').style.display = 'none'; // ซ่อนปุ่มเลขเบิ้ล
-        
+
         // ปรับขนาดของกล่องบน
         betTopElement.style.width = '420px'; // หรือขนาดที่คุณต้องการ
     } else if (selectedOption === 'option3' || selectedOption === 'option4' || 
@@ -557,11 +635,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('back-number-btn').style.display = 'none'; // ซ่อนปุ่มกลับเลข
         document.getElementById('double-number-btn').style.display = 'none'; // ซ่อนปุ่มเลขเบิ้ล
         document.getElementById('bet-bottom').parentElement.style.display = 'block'; // แสดงกล่องล่าง
+        document.getElementById('bet-tod').parentElement.style.display = 'none'; // ซ่อนกล่อง bet-tod
 
         // คืนค่าขนาดกล่องบน
         betTopElement.style.width = '200px'; // ขนาดเดิม
     } else {
         document.getElementById('bet-bottom').parentElement.style.display = 'block'; // แสดงกล่องล่าง
+        document.getElementById('bet-tod').parentElement.style.display = 'none'; // ซ่อนกล่อง bet-tod
         document.getElementById('back-number-btn').style.display = 'block'; // แสดงปุ่มกลับเลข
         document.getElementById('double-number-btn').style.display = 'block'; // แสดงปุ่มเลขเบิ้ล
 
@@ -569,6 +649,7 @@ document.addEventListener('DOMContentLoaded', function() {
         betTopElement.style.width = '200px'; // ขนาดเดิม
     }
 });
+
 document.getElementById('bet-number').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault(); // ป้องกันการทำงานปกติของ Enter
@@ -595,5 +676,27 @@ document.getElementById('bet-number').addEventListener('keydown', function(event
             document.querySelector('button[onclick="addBet()"]').click(); // คลิกปุ่ม "เพิ่ม +"
         }
 });
+
+// ฟังก์ชันสำหรับเพิ่มเลขเบิ้ลเข้าไปในรายการ
+function addDoubleNumbers() {
+    const doubleNumbers = ['00', '11', '22', '33', '44', '55', '66', '77', '88', '99'];
+    doubleNumbers.forEach(number => {
+        // ตรวจสอบว่าเลขเบิ้ลยังไม่ได้อยู่ในรายการ
+        if (!betsNumber.includes(number)) {
+            addBetToList(number); // เพิ่มเลขเบิ้ลเข้าไปในรายการ
+        }
+    });
+}
+
+// ฟังก์ชันสำหรับเพิ่มกลับตองเข้าไปในรายการ
+function addTripleNumbers() {
+    const tripleNumbers = ['000', '111', '222', '333', '444', '555', '666', '777', '888', '999'];
+    tripleNumbers.forEach(number => {
+        // ตรวจสอบว่าเลขตองยังไม่ได้อยู่ในรายการ
+        if (!betsNumber.includes(number)) {
+            addBetToList(number); // เพิ่มเลขตองเข้าไปในรายการ
+        }
+    });
+}
 </script>
 {% endblock %}
