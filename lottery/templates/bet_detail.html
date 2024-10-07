@@ -165,7 +165,7 @@
                                                                                                           
                         
                     <!-- Selected Bets -->
-                    <div class="bet-summary card p-2" style="background-color: #c8e6c9; border-radius: 10px; padding: 20px; max-width: 100%;">
+                    <div class="bet-summary card p-2" style="background-color: #c8e6c9; border-radius: 10px; padding: 20px; max-width: 100%; height: 380px;">
                         <div class="bet-summary-header card-header" style="display: flex; justify-content: space-between; align-items: center; background-color: #52be80; padding: 8px; border-radius: 5px;">
                             <div style="display: flex; align-items: center;">
                                 <img src="{{ lottery.image.url }}" alt="{{ lottery.name }}" style="width: 40px; height: 25px; margin-right: 10px;">
@@ -173,7 +173,7 @@
                             </div>
                             <p class="mb-0" style="color: black; font-weight: normal; font-size: 15px">งวดวันที่ {{ draw_date }}</p>
                         </div>
-                        <div id="bet-list" class="bet-list card-body" style="background-color: #c8e6c9; padding: 100px; max-height: 300px; overflow-y: auto;">
+                        <div id="bet-list" class="bet-list card-body" style="background-color: #c8e6c9; max-height: 300px; overflow-y: auto;">
                             <!-- Bets will be added here dynamically -->
                         </div>
                         <div class="d-flex justify-content-between card-footer" style="background-color: #52be80; padding: 1px; border-radius: 5px;">
@@ -198,7 +198,7 @@
                     
 
                 <!-- History and Closed Numbers (unchanged) -->
-                <div class="col-12 col-xl-4">
+                <div class="col-12 col-md-4 col-xl-4">
                     <!-- Bet History -->
                     <div class="bet-history mb-3">
                         <h5>รายการบิลล่าสุด 15 รายการ</h5>
@@ -243,76 +243,63 @@
 </div>
 
 <script>
-    let bets = [];
+    document.querySelector('button[onclick="addBet()"]').addEventListener('click', function() {
+    // Get the bet-top and bet-bottom values
+    const betTop = parseFloat(document.getElementById('bet-top').value) || 0;
+    const betBottom = parseFloat(document.getElementById('bet-bottom').value) || 0;
 
-    function addBet() {
-        const number = document.getElementById('bet-number').value;
-        const top = document.getElementById('bet-top').value;
-        const bottom = document.getElementById('bet-bottom').value;
+    // Get the length of betsNumber array
+    const totalBets = betsNumber.length;
 
-        if (number && (top || bottom)) {
-            bets.push({ number: number, top: top, bottom: bottom });
+    // Calculate the total based on bet-top and bet-bottom
+    const totalAmount = (totalBets * betTop) + (totalBets * betBottom);
 
-            // Add the bet to the list display
-            const betItem = document.createElement('div');
-            betItem.classList.add('bet-list-item', 'd-flex', 'justify-content-between', 'mb-1');
-            betItem.innerHTML = `
-                <span>เลข: ${number} | บน: ${top} | ล่าง: ${bottom}</span>
-                <button class="btn btn-danger btn-sm" onclick="removeBet(this, ${bets.length - 1})">ลบ</button>
-            `;
-            document.getElementById('bet-list').appendChild(betItem);
+    // Add the result to the id="bet-list"
+    const betItem = document.createElement('div');
 
-            // Update the bet count
-            document.getElementById('bet-count').innerText = bets.length;
+    betItem.innerHTML = `
+        <div class="d-flex justify-content-between fs-5 text-warning">
+            <span>บน: ${betTop} | ล่าง: ${betBottom}</span>
+            <button class="btn btn-danger btn-sm ml-2" onclick="removeBet(betItem, ${totalAmount})">
+                <i class="fas fa-trash-alt"></i> <!-- Icon for delete -->
+            </button>
+        </div>
+        <div class='fs-5 mb-2'>
+            <span>${betsNumber.join(', ')}</span>
+        </div>
+    `;
 
-            // Clear input fields
-            document.getElementById('bet-number').value = '';
-            document.getElementById('bet-top').value = '';
-            document.getElementById('bet-bottom').value = '';
-        } else {
-            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
-        }
-    }
+    document.getElementById('bet-list').appendChild(betItem);
 
-    function removeBet(button, index) {
-        // Remove from the list display
-        button.parentElement.remove();
+    // Update the total displayed in the footer
+    const currentTotal = parseFloat(document.getElementById('total-amount').textContent) || 0;
+    const newTotal = currentTotal + totalAmount;
+    document.getElementById('total-amount').textContent = `${newTotal}฿`;
 
-        // Remove the bet from the array
-        bets.splice(index, 1);
+    // Clear the input fields after adding
+    clearForm();
+});
+function removeBet(betItem, totalAmount) {
+    // ลบ betItem ออกจาก DOM
+    betItem.remove();
 
-        // Update the bet count
-        document.getElementById('bet-count').innerText = bets.length;
-    }
+    // อัปเดตยอดรวมใน footer
+    const currentTotal = parseFloat(document.getElementById('total-amount').textContent) || 0;
+    const newTotal = currentTotal - totalAmount; // ลดยอดรวมออก
+    document.getElementById('total-amount').textContent = `${newTotal}฿`;
+}
 
-    function prepareFormSubmission() {
-        const betData = JSON.stringify(bets);
-        document.getElementById('bet-data').value = betData;
-    }
 
-    //2-3ตัว
-    document.querySelectorAll('input[name="options"]').forEach(option => {
-        option.addEventListener('change', showOrHideButtons);
-    });
 
-    function showOrHideButtons() {
-        const selectedOption = document.querySelector('input[name="options"]:checked').id;
+function clearForm() {
+    // Clear the input fields and bets
+    betsNumber = [];
+    document.getElementById('bet-list-number').innerHTML = '';
+    document.getElementById('bet-list-summary').innerText = `0`;
+    document.getElementById('bet-top').value = '';
+    document.getElementById('bet-bottom').value = '';
+}
 
-        // ซ่อนปุ่มทั้งหมดก่อน
-        document.getElementById('back-number-btn').classList.add('d-none');
-        document.getElementById('double-number-btn').classList.add('d-none');
-        document.getElementById('triple-number-btn').classList.add('d-none');
-
-        if (selectedOption === 'option1') {
-            // แสดงปุ่ม กลับเลข และ เลขเบิ้ล
-            document.getElementById('back-number-btn').classList.remove('d-none');
-            document.getElementById('double-number-btn').classList.remove('d-none');
-        } else if (selectedOption === 'option2') {
-            // แสดงปุ่ม กลับเลข และ เลขตอง
-            document.getElementById('back-number-btn').classList.remove('d-none');
-            document.getElementById('triple-number-btn').classList.remove('d-none');
-        }
-    }
 
     // input
     let betsNumber = [];
@@ -376,13 +363,75 @@ function process19DoorsBet(input) {
 }
 
 // Generate 19 doors for a given single digit
-function generate19Doors(digit) {
+function generate19Doors(digit) {  
     let doors = [];
     for (let i = 0; i <= 9; i++) {
         doors.push(`${digit}${i}`, `${i}${digit}`);
     }
     return [...new Set(doors)]; // Ensure no duplicates
 }
+
+// Function for processing six-permutation bet (6กลับ)
+function processSixPermutations(input) {
+    if (input.length === 3) {
+        let numbers = input.split('/').filter(num => num.length === 3);
+        numbers.forEach(num => {
+            let permutations = generatePermutations(num);
+            permutations.forEach(perm => addBetToList(perm));
+        });
+    }
+}
+
+// Generate all 6 permutations for a 3-digit number
+function generatePermutations(number) {
+    let digits = number.split('');
+    let permutations = [];
+
+    // Push all possible permutations (6 cases)
+    permutations.push(digits[0] + digits[1] + digits[2]);
+    permutations.push(digits[0] + digits[2] + digits[1]);
+    permutations.push(digits[1] + digits[0] + digits[2]);
+    permutations.push(digits[1] + digits[2] + digits[0]);
+    permutations.push(digits[2] + digits[0] + digits[1]);
+    permutations.push(digits[2] + digits[1] + digits[0]);
+
+    return [...new Set(permutations)]; // Remove any duplicates
+}
+
+// Function for processing front sweep (รูดหน้า)
+function processFrontSweep(input) {
+    if (input.length === 1) {
+        let frontSweepNumbers = generateFrontSweep(input);
+        frontSweepNumbers.forEach(num => addBetToList(num));
+    }
+}
+
+// Generate front sweep numbers (รูดหน้า) for a given single digit (หลักสิบ)
+function generateFrontSweep(digit) {
+    let frontSweep = [];
+    for (let i = 0; i <= 9; i++) {
+        frontSweep.push(`${digit}${i}`); // สร้างเลขตั้งแต่ digit0 ถึง digit9
+    }
+    return frontSweep;
+}
+
+// Function for processing back sweep (รูดหลัง)
+function processBackSweep(input) {
+    if (input.length === 1) {
+        let backSweepNumbers = generateBackSweep(input);
+        backSweepNumbers.forEach(num => addBetToList(num));
+    }
+}
+
+// Generate back sweep numbers (รูดหลัง) for a given single digit (หลักหน่วย)
+function generateBackSweep(digit) {
+    let backSweep = [];
+    for (let i = 0; i <= 9; i++) {
+        backSweep.push(`${i}${digit}`); // สร้างเลขตั้งแต่ 0digit ถึง 9digit
+    }
+    return backSweep;
+}
+
 
 // Add bet to list display
 function addBetToList(number) {
