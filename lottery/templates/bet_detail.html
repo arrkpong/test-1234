@@ -220,14 +220,13 @@
                                 </div>
                     
                                 <!-- Modal Body -->
-                                <!-- Modal Body -->
                             <div class="modal-body">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>ประเภท</th>
-                                            <th>เลข</th>
+                                            <th></th>
+                                            <th></th>
                                             <th>เรท</th>
                                             <th>รางวัล</th>
                                         </tr>
@@ -253,11 +252,6 @@
                         </div>
                     </div>
                     
-                    
-
-
-                                   
-
                 <!-- History and Closed Numbers (unchanged) -->
                 <div class="col-12 col-md-4 col-xl-4">
                     <!-- Bet History -->
@@ -330,8 +324,8 @@ document.querySelector('button[onclick="addBet()"]').addEventListener('click', f
         optionLabel = "2 ตัว "; // Default case if no match, treat as "2 ตัว"
     }
 
-    // Build the display text depending on betTop, betBottom, and betTod values
-    let betDescription = '';
+     // Build the display text depending on betTop, betBottom, and betTod values
+     let betDescription = '';
     let totalAmount = 0; // Initialize the total amount for this bet
     const betAmountTop = parseFloat(betTop) || 0; // Ensure numeric value, default to 0 if empty
     const betAmountBottom = parseFloat(betBottom) || 0; // Ensure numeric value, default to 0 if empty
@@ -763,109 +757,8 @@ function addTripleNumbers() {
         }
     });
 }
-document.getElementById('sendBetButton').addEventListener('click', function() {
-    // Get the bet list data from your existing bet list (assuming it's being stored)
-    const betList = document.querySelectorAll('.bet-item'); // Assuming each bet entry has a class .bet-item
 
-    // Clear the previous data from the table
-    const betListTable = document.getElementById('betListTable');
-    betListTable.innerHTML = '';
 
-    // Iterate over the bet list and separate each bet for top (บน), bottom (ล่าง), or other types
-    betList.forEach((betItem, index) => {
-        const betDescription = betItem.querySelector('span').innerText; // Get the description
-        const betsNumber = betItem.querySelectorAll('span')[1].innerText; // Assuming bet numbers are stored in another span
-        const betAmounts = betDescription.match(/\d+/g); // Extract bet amounts (for example, from '5 x 5')
-
-        // Get the type of bet from the description (i.e., check if it contains "บน", "ล่าง", or "โต๊ด")
-        const isTopBet = betDescription.includes("บน");
-        const isBottomBet = betDescription.includes("ล่าง");
-        const isTodBet = betDescription.includes("โต๊ด");
-
-        let rateTop = 0;
-        let rateBottom = 0;
-        let rateTod = 0;
-        let rewardTop = 0;
-        let rewardBottom = 0;
-        let rewardTod = 0;
-
-        // Identify the number of digits in the bet number
-        const numDigits = betsNumber.length;
-
-        // Handle 2-digit numbers (2 ตัว)
-        if (numDigits === 2) {  
-            if (isTopBet) {
-                rateTop = 100;
-                rewardTop = betAmounts[0] * rateTop; // Reward for top
-            }
-            if (isBottomBet) {
-                rateBottom = 100;
-                rewardBottom = betAmounts[1] * rateBottom; // Reward for bottom
-            }
-        }
-
-        // Handle 3-digit numbers (3 ตัว)
-        if (numDigits === 3) {  
-            if (isTopBet) {
-                rateTop = 800;
-                rewardTop = betAmounts[0] * rateTop; // Reward for top (3 ตัว)
-            }
-            if (isTodBet) {
-                rateTod = 125;
-                rewardTod = betAmounts[0] * rateTod; // Reward for โต๊ด (3 ตัว)
-            }
-        }
-
-        // Add section for top (บน) only if the bet is for top
-        if (isTopBet) {
-            const topRow = document.createElement('tr');
-            topRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${numDigits === 2 ? '2 บน' : '3 บน'}</td>
-                <td>${betsNumber}</td>
-                <td>${betAmounts[0]}</td>
-                <td>${rewardTop}</td>
-            `;
-            betListTable.appendChild(topRow);
-        }
-
-        // Add section for bottom (ล่าง) only if the bet is for bottom
-        if (isBottomBet) {
-            const bottomRow = document.createElement('tr');
-            bottomRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${numDigits === 2 ? '2 ล่าง' : '3 ล่าง'}</td>
-                <td>${betsNumber}</td>
-                <td>${betAmounts[1]}</td>
-                <td>${rewardBottom}</td>
-            `;
-            betListTable.appendChild(bottomRow);
-        }
-
-        // Add section for โต๊ด (if it's a 3 ตัว โต๊ด bet)
-        if (isTodBet) {
-            const todRow = document.createElement('tr');
-            todRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>3 โต๊ด</td>
-                <td>${betsNumber}</td>
-                <td>${betAmounts[0]}</td>
-                <td>${rewardTod}</td>
-            `;
-            betListTable.appendChild(todRow);
-        }
-    });
-
-    // Set the total amount in the modal (this should be calculated based on actual bet data)
-    const totalAmount = document.getElementById('total-amount').textContent;
-    document.getElementById('total-amount-popup').textContent = totalAmount;
-
-    // Show the modal
-    var myModal = new bootstrap.Modal(document.getElementById('confirmBetModal'), {
-        keyboard: false
-    });
-    myModal.show();
-});
 
 </script>
 {% endblock %}
