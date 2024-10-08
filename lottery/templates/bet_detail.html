@@ -226,12 +226,26 @@
                                         <tr>
                                             <th>#</th>
                                             <th></th>
-                                            <th></th>
+                                            <th>2 บน</th>
                                             <th>เรท</th>
                                             <th>รางวัล</th>
                                         </tr>
                                     </thead>
                                     <tbody id="betListTable">
+                                        <!-- Rows will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th></th>
+                                            <th>2 ล่าง</th>
+                                            <th>เรท</th>
+                                            <th>รางวัล</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="betListTableBottom">
                                         <!-- Rows will be populated dynamically -->
                                     </tbody>
                                 </table>
@@ -361,6 +375,9 @@ document.querySelector('button[onclick="addBet()"]').addEventListener('click', f
     // Add the result to the id="bet-list"
     const betItem = document.createElement('div');
     betItem.classList.add('bet-item'); // Add a class to the item for easy reference
+    betItem.setAttribute('data-bet-top', betTop);
+    betItem.setAttribute('data-bet-bottom', betBottom);
+    betItem.setAttribute('data-bet-tod', betTod);
 
     betItem.innerHTML = `
         <div class="d-flex justify-content-between fs-5 text-warning" style="line-height: 1.4;"> <!-- Adjust line-height for better spacing -->
@@ -757,13 +774,17 @@ function addTripleNumbers() {
         }
     });
 }
+
+// table dialog
 document.getElementById('sendBetButton').addEventListener('click', function() {
     // Get the bet list data from your existing bet list
     const betList = document.querySelectorAll('.bet-item'); // Assuming each bet entry has a class .bet-item
+    const betListTable = document.getElementById('betListTable');
+    const betListTableBottom = document.getElementById('betListTableBottom');
 
     // Clear the previous data from the table
-    const betListTable = document.getElementById('betListTable');
     betListTable.innerHTML = '';
+    betListTableBottom.innerHTML = '';
 
     let totalAmount = 0;
 
@@ -772,15 +793,19 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
         const betDescription = betItem.querySelector('span').innerText; // Get the description
         const betsNumber = betItem.querySelectorAll('span')[1].innerText; // Assuming the bet number is in the second span
 
+        const betTopValue = parseFloat(betItem.dataset.betTop) || 0;
+        const betBottomValue = parseFloat(betItem.dataset.betBottom) || 0;
+        const betTodValue = parseFloat(betItem.dataset.betTod) || 0;
+
         const betAmounts = betDescription.match(/\d+/g); // Extract bet amounts (for example, from '5 x 5')
         const topBetAmount = parseFloat(betAmounts[0]) || 0; // Amount for top
         const bottomBetAmount = betAmounts.length > 1 ? parseFloat(betAmounts[1]) : 0; // Amount for bottom
 
         let rate = 100; // Fixed rate for 2 ตัว
-        let rewardTop = topBetAmount * rate;
-        let rewardBottom = bottomBetAmount * rate;
+        let rewardTop = betTopValue * rate;
+        let rewardBottom = betBottomValue * rate;
 
-        totalAmount += topBetAmount + bottomBetAmount; // Calculate total amount for the bet
+        totalAmount += rewardTop + rewardBottom; // Calculate total amount for the bet
 
         // Detect bet type and categorize into columns
         if (betsNumber.length === 2) {
@@ -789,8 +814,8 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
                 const topRow = document.createElement('tr');
                 topRow.innerHTML = `
                     <td>${index + 1}</td> <!-- ลำดับ -->
-                    <td>2 บน</td> <!-- ประเภทการแทง -->
                     <td>${betsNumber}</td> <!-- เลขที่แทง -->
+                    <td>${betTopValue}</td>
                     <td>${rate}</td> <!-- เรท -->
                     <td>${rewardTop}</td> <!-- รางวัล -->
                 `;
@@ -800,12 +825,12 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
                 const bottomRow = document.createElement('tr');
                 bottomRow.innerHTML = `
                     <td>${index + 1}</td> <!-- ลำดับ -->
-                    <td>2 ล่าง</td> <!-- ประเภทการแทง -->
                     <td>${betsNumber}</td>
+                    <td>${betBottomValue}</td>
                     <td>${rate}</td>
                     <td>${rewardBottom}</td>
                 `;
-                betListTable.appendChild(bottomRow);
+                betListTableBottom.appendChild(bottomRow);
             }
         } else if (betsNumber.length === 3) {
             // 3 ตัว
