@@ -757,7 +757,102 @@ function addTripleNumbers() {
         }
     });
 }
+document.getElementById('sendBetButton').addEventListener('click', function() {
+    // Get the bet list data from your existing bet list
+    const betList = document.querySelectorAll('.bet-item'); // Assuming each bet entry has a class .bet-item
 
+    // Clear the previous data from the table
+    const betListTable = document.getElementById('betListTable');
+    betListTable.innerHTML = '';
+
+    let totalAmount = 0;
+
+    // Iterate over the bet list and process each bet
+    betList.forEach((betItem, index) => {
+        const betDescription = betItem.querySelector('span').innerText; // Get the description
+        const betsNumber = betItem.querySelectorAll('span')[1].innerText; // Assuming the bet number is in the second span
+
+        const betAmounts = betDescription.match(/\d+/g); // Extract bet amounts (for example, from '5 x 5')
+        const topBetAmount = parseFloat(betAmounts[0]) || 0; // Amount for top
+        const bottomBetAmount = betAmounts.length > 1 ? parseFloat(betAmounts[1]) : 0; // Amount for bottom
+
+        let rate = 100; // Fixed rate for 2 ตัว
+        let rewardTop = topBetAmount * rate;
+        let rewardBottom = bottomBetAmount * rate;
+
+        totalAmount += topBetAmount + bottomBetAmount; // Calculate total amount for the bet
+
+        // Detect bet type and categorize into columns
+        if (betsNumber.length === 2) {
+            // 2 ตัว
+            if (topBetAmount > 0) {
+                const topRow = document.createElement('tr');
+                topRow.innerHTML = `
+                    <td>${index + 1}</td> <!-- ลำดับ -->
+                    <td>2 บน</td> <!-- ประเภทการแทง -->
+                    <td>${betsNumber}</td> <!-- เลขที่แทง -->
+                    <td>${rate}</td> <!-- เรท -->
+                    <td>${rewardTop}</td> <!-- รางวัล -->
+                `;
+                betListTable.appendChild(topRow);
+            }
+            if (bottomBetAmount > 0) {
+                const bottomRow = document.createElement('tr');
+                bottomRow.innerHTML = `
+                    <td>${index + 1}</td> <!-- ลำดับ -->
+                    <td>2 ล่าง</td> <!-- ประเภทการแทง -->
+                    <td>${betsNumber}</td>
+                    <td>${rate}</td>
+                    <td>${rewardBottom}</td>
+                `;
+                betListTable.appendChild(bottomRow);
+            }
+        } else if (betsNumber.length === 3) {
+            // 3 ตัว
+            const topRow = document.createElement('tr');
+            topRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>3 บน</td> <!-- ประเภทการแทง -->
+                <td>${betsNumber}</td> <!-- เลขที่แทง -->
+                <td>800</td> <!-- เรทสำหรับ 3 ตัว -->
+                <td>${topBetAmount * 800}</td> <!-- รางวัล -->
+            `;
+            betListTable.appendChild(topRow);
+        } else if (betsNumber.length === 1) {
+            // วิ่ง
+            if (topBetAmount > 0) {
+                const topRow = document.createElement('tr');
+                topRow.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>วิ่งบน</td> <!-- ประเภทการแทง -->
+                    <td>${betsNumber}</td>
+                    <td>3</td> <!-- เรทสำหรับวิ่งบน -->
+                    <td>${topBetAmount * 3}</td> <!-- รางวัล -->
+                `;
+                betListTable.appendChild(topRow);
+            }
+            if (bottomBetAmount > 0) {
+                const bottomRow = document.createElement('tr');
+                bottomRow.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>วิ่งล่าง</td> <!-- ประเภทการแทง -->
+                    <td>${betsNumber}</td>
+                    <td>4</td> <!-- เรทสำหรับวิ่งล่าง -->
+                    <td>${bottomBetAmount * 4}</td> <!-- รางวัล -->
+                `;
+                betListTable.appendChild(bottomRow);
+            }
+        }
+    });
+
+    // Set the total amount and show the modal
+    document.getElementById('total-amount-popup').textContent = `${totalAmount}฿`;
+
+    var myModal = new bootstrap.Modal(document.getElementById('confirmBetModal'), {
+        keyboard: false
+    });
+    myModal.show();
+});
 
 
 </script>
