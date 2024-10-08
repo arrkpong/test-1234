@@ -199,11 +199,64 @@
                     
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-bills w-100" type="submit" style="padding: 10px 40px;">
-                            <i class="fas fa-paper-plane"></i> สั่งโพย
+                        <button id="sendBetButton" class="btn btn-bills w-100" type="button" style="padding: 10px 40px;">
+                            <i class="fas fa-paper-plane"></i> ส่งโพย
                         </button>
                     </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmBetModal" tabindex="-1" aria-labelledby="confirmBetModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <!-- Modal Header with Image, Lottery Name, and Draw Date -->
+                                <div class="modal-header d-flex justify-content-between align-items-center">
+                                    <h5 class="modal-title" id="confirmBetModalLabel" style="font-size: 15px; font-weight: normal;">ยืนยันการส่งโพย</h5>
+                                    <div class="d-flex align-items-center" style="margin-left: auto;">
+                                        <img src="{{ lottery.image.url }}" alt="{{ lottery.name }}" style="width: 40px; height: 25px; margin-right: 8px;">
+                                        <div class="text-right">
+                                            <span style="font-size: 15px;font-weight: normal">{{ lottery.name }}</span> 
+                                            <span style="font-size: 12px;">งวดวันที่ {{ draw_date }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                     
+                                <!-- Modal Body -->
+                                <!-- Modal Body -->
+                            <div class="modal-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ประเภท</th>
+                                            <th>เลข</th>
+                                            <th>เรท</th>
+                                            <th>รางวัล</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="betListTable">
+                                        <!-- Rows will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                                <hr />
+                                <div class="d-flex justify-content-between">
+                                    <span>ยอดแทงรวม</span>
+                                    <span id="total-amount-popup">10฿</span>
+                                </div>
+                            </div>
+                    
+                                <!-- Modal Footer -->
+                                <div class="modal-footer">
+                                    <textarea class="form-control" id="note" rows="2" placeholder="Note"></textarea>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ย้อนกลับ</button>
+                                    <button type="button" class="btn btn-success">ยืนยันการส่งโพย</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+
+
+                                   
 
                 <!-- History and Closed Numbers (unchanged) -->
                 <div class="col-12 col-md-4 col-xl-4">
@@ -265,36 +318,47 @@ document.querySelector('button[onclick="addBet()"]').addEventListener('click', f
 
     // Determine the type of bet based on the length of the betsNumber
     let optionLabel;
-    if (betsNumber.join('').length === 2) {
+    const firstSet = betsNumber[0]; // Consider only the first set of numbers
+
+    if (firstSet.length === 2) {
         optionLabel = "2 ตัว ";
-    } else if (betsNumber.join('').length === 3) {
+    } else if (firstSet.length === 3) {
         optionLabel = "3 ตัว ";
-    } else if (betsNumber.join('').length === 1) {
+    } else if (firstSet.length === 1) {
         optionLabel = "วิ่ง ";
     } else {
-        optionLabel = "อื่นๆ ";
+        optionLabel = "2 ตัว "; // Default case if no match, treat as "2 ตัว"
     }
 
     // Build the display text depending on betTop, betBottom, and betTod values
     let betDescription = '';
+    let totalAmount = 0; // Initialize the total amount for this bet
+    const betAmountTop = parseFloat(betTop) || 0; // Ensure numeric value, default to 0 if empty
+    const betAmountBottom = parseFloat(betBottom) || 0; // Ensure numeric value, default to 0 if empty
+
     if (selectedOption === 'option2') { // If Option 2 is selected (สามตัว)
         // Check for betTop and betTod values only
         if (betTop && !betTod) {
             betDescription = `${optionLabel}บน: ${betTop}`;
+            totalAmount = betAmountTop; // Add amount for top bet only
         } else if (!betTop && betTod) {
             betDescription = `${optionLabel}โต๊ด: ${betTod}`;
         } else if (betTop && betTod) {
             betDescription = `${optionLabel}บน x โต๊ด: ${betTop} x ${betTod}`;
+            totalAmount = betAmountTop; // Add amount for top bet only (adjust for โต๊ด as needed)
         } else {
             betDescription = 'กรุณากรอกอย่างน้อยหนึ่งค่า';
         }
     } else { // For other options
         if (betTop && !betBottom) {
             betDescription = `${optionLabel}บน: ${betTop}`;
+            totalAmount = betAmountTop * betsNumber.length; // Calculate total for top bet
         } else if (!betTop && betBottom) {
             betDescription = `${optionLabel}ล่าง: ${betBottom}`;
+            totalAmount = betAmountBottom * betsNumber.length; // Calculate total for bottom bet
         } else if (betTop && betBottom) {
             betDescription = `${optionLabel}บน x ล่าง: ${betTop} x ${betBottom}`;
+            totalAmount = (betAmountTop + betAmountBottom) * betsNumber.length; // Calculate total for both top and bottom
         } else {
             betDescription = 'กรุณากรอกอย่างน้อยหนึ่งค่า';
         }
@@ -305,18 +369,23 @@ document.querySelector('button[onclick="addBet()"]').addEventListener('click', f
     betItem.classList.add('bet-item'); // Add a class to the item for easy reference
 
     betItem.innerHTML = `
-        <div class="d-flex justify-content-between fs-5 text-warning" style="line-height: 1.2;">
-            <span style="font-size: 16px; color: #f39c12;">${betDescription}</span>
-            <button class="btn btn-danger btn-sm ml-2 remove-bet">
-                <i class="fas fa-trash-alt"></i> <!-- Icon for delete -->
-            </button>
-        </div>
-        <div class='fs-5' style="line-height: 0.5;">
-            <span style="font-size: 16px;">${betsNumber.join(', ')}</span>
-        </div>
+        <div class="d-flex justify-content-between fs-5 text-warning" style="line-height: 1.4;"> <!-- Adjust line-height for better spacing -->
+        <span style="font-size: 16px; color: #f39c12;margin-top: 10px;">${betDescription}</span>
+        <button class="btn btn-danger btn-sm ml-2 remove-bet">
+            <i class="fas fa-trash-alt"></i> <!-- Icon for delete -->
+        </button>
+    </div>
+    <div class='fs-5' style="line-height: 1.2;">
+        <span style="font-size: 16px;">${betsNumber.join(', ')}</span>
+    </div>
     `;
 
     document.getElementById('bet-list').appendChild(betItem);
+
+    // Update the total amount in the footer
+    const currentTotal = parseFloat(document.getElementById('total-amount').textContent) || 0;
+    const newTotal = currentTotal + totalAmount;
+    document.getElementById('total-amount').textContent = `${newTotal}฿`; // Update total in the footer
 
     // Clear the form after adding the bet
     clearForm();
@@ -324,19 +393,15 @@ document.querySelector('button[onclick="addBet()"]').addEventListener('click', f
     // Add the remove functionality
     betItem.querySelector('.remove-bet').addEventListener('click', function() {
         const itemToRemove = this.closest('.bet-item'); // Get the closest parent with the class bet-item
+        const itemTotal = totalAmount; // Get the amount for the bet being removed
         itemToRemove.remove(); // Remove that specific item from the DOM
+
+        // Update the total amount after removing the bet
+        const currentTotal = parseFloat(document.getElementById('total-amount').textContent) || 0;
+        const newTotal = currentTotal - itemTotal; // Subtract the amount
+        document.getElementById('total-amount').textContent = `${newTotal}฿`;
     });
 });
-
-function removeBet(betItem, totalAmount) {
-    // ลบ betItem ออกจาก DOM
-    betItem.remove();
-
-    // อัปเดตยอดรวมใน footer
-    const currentTotal = parseFloat(document.getElementById('total-amount').textContent) || 0;
-    const newTotal = currentTotal - totalAmount; // ลดยอดรวมออก
-    document.getElementById('total-amount').textContent = `${newTotal}฿`;
-}
 
 
 
@@ -698,5 +763,109 @@ function addTripleNumbers() {
         }
     });
 }
+document.getElementById('sendBetButton').addEventListener('click', function() {
+    // Get the bet list data from your existing bet list (assuming it's being stored)
+    const betList = document.querySelectorAll('.bet-item'); // Assuming each bet entry has a class .bet-item
+
+    // Clear the previous data from the table
+    const betListTable = document.getElementById('betListTable');
+    betListTable.innerHTML = '';
+
+    // Iterate over the bet list and separate each bet for top (บน), bottom (ล่าง), or other types
+    betList.forEach((betItem, index) => {
+        const betDescription = betItem.querySelector('span').innerText; // Get the description
+        const betsNumber = betItem.querySelectorAll('span')[1].innerText; // Assuming bet numbers are stored in another span
+        const betAmounts = betDescription.match(/\d+/g); // Extract bet amounts (for example, from '5 x 5')
+
+        // Get the type of bet from the description (i.e., check if it contains "บน", "ล่าง", or "โต๊ด")
+        const isTopBet = betDescription.includes("บน");
+        const isBottomBet = betDescription.includes("ล่าง");
+        const isTodBet = betDescription.includes("โต๊ด");
+
+        let rateTop = 0;
+        let rateBottom = 0;
+        let rateTod = 0;
+        let rewardTop = 0;
+        let rewardBottom = 0;
+        let rewardTod = 0;
+
+        // Identify the number of digits in the bet number
+        const numDigits = betsNumber.length;
+
+        // Handle 2-digit numbers (2 ตัว)
+        if (numDigits === 2) {  
+            if (isTopBet) {
+                rateTop = 100;
+                rewardTop = betAmounts[0] * rateTop; // Reward for top
+            }
+            if (isBottomBet) {
+                rateBottom = 100;
+                rewardBottom = betAmounts[1] * rateBottom; // Reward for bottom
+            }
+        }
+
+        // Handle 3-digit numbers (3 ตัว)
+        if (numDigits === 3) {  
+            if (isTopBet) {
+                rateTop = 800;
+                rewardTop = betAmounts[0] * rateTop; // Reward for top (3 ตัว)
+            }
+            if (isTodBet) {
+                rateTod = 125;
+                rewardTod = betAmounts[0] * rateTod; // Reward for โต๊ด (3 ตัว)
+            }
+        }
+
+        // Add section for top (บน) only if the bet is for top
+        if (isTopBet) {
+            const topRow = document.createElement('tr');
+            topRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${numDigits === 2 ? '2 บน' : '3 บน'}</td>
+                <td>${betsNumber}</td>
+                <td>${betAmounts[0]}</td>
+                <td>${rewardTop}</td>
+            `;
+            betListTable.appendChild(topRow);
+        }
+
+        // Add section for bottom (ล่าง) only if the bet is for bottom
+        if (isBottomBet) {
+            const bottomRow = document.createElement('tr');
+            bottomRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${numDigits === 2 ? '2 ล่าง' : '3 ล่าง'}</td>
+                <td>${betsNumber}</td>
+                <td>${betAmounts[1]}</td>
+                <td>${rewardBottom}</td>
+            `;
+            betListTable.appendChild(bottomRow);
+        }
+
+        // Add section for โต๊ด (if it's a 3 ตัว โต๊ด bet)
+        if (isTodBet) {
+            const todRow = document.createElement('tr');
+            todRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>3 โต๊ด</td>
+                <td>${betsNumber}</td>
+                <td>${betAmounts[0]}</td>
+                <td>${rewardTod}</td>
+            `;
+            betListTable.appendChild(todRow);
+        }
+    });
+
+    // Set the total amount in the modal (this should be calculated based on actual bet data)
+    const totalAmount = document.getElementById('total-amount').textContent;
+    document.getElementById('total-amount-popup').textContent = totalAmount;
+
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('confirmBetModal'), {
+        keyboard: false
+    });
+    myModal.show();
+});
+
 </script>
 {% endblock %}
