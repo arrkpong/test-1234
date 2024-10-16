@@ -698,33 +698,35 @@ function reverseBets() {
             }
         } else if (number.length === 3) {
             let tripletReversed = generateReversedTriplets(number); // เรียกฟังก์ชันกลับเลขสามตัว
-            tripletReversed.forEach(reversed => {
-                if (!betsNumber.includes(reversed)) {
-                    addBetToList(reversed); // เพิ่มแต่ละเลขกลับไปในรายการ
-                }
-            });
+            if (tripletReversed.length > 0) {
+                tripletReversed.forEach(reversed => {
+                    if (!betsNumber.includes(reversed)) {
+                        addBetToList(reversed); // เพิ่มแต่ละเลขกลับไปในรายการ
+                    }
+                });
+            }
         }
     });
 }
 
-// ฟังก์ชันสำหรับกลับเลขสามตัวที่มีเลขซ้ำ
+// ฟังก์ชันสำหรับกลับเลขสามตัวที่มีเลขซ้ำกัน 2 ตัว
 function generateReversedTriplets(number) {
     let [a, b, c] = number.split(''); // แยกเลขทั้งสามตัว
     let results = new Set(); // ใช้ Set เพื่อไม่ให้มีค่าซ้ำกัน
 
-    // สร้างค่าผสมที่เป็นไปได้
-    results.add(`${a}${b}${c}`);
-    results.add(`${a}${c}${b}`);
-    results.add(`${b}${a}${c}`);
-    results.add(`${b}${c}${a}`);
-    results.add(`${c}${a}${b}`);
-    results.add(`${c}${b}${a}`);
+    // ตรวจสอบว่าเลขมีตัวซ้ำกัน 2 ตัวหรือไม่
+    if ((a === b || a === c || b === c)) {
+        results.add(`${a}${b}${c}`);
+        results.add(`${a}${c}${b}`);
+        results.add(`${b}${a}${c}`);
+        results.add(`${b}${c}${a}`);
+        results.add(`${c}${a}${b}`);
+        results.add(`${c}${b}${a}`);
+    }
 
-    // กรองค่าซ้ำแล้วคืนค่าเป็น Array
+    // คืนค่าชุดเลขที่กลับ ถ้าไม่มีเลขซ้ำกัน จะคืนค่าเป็น array ว่าง
     return [...results];
 }
-
-
 
 // Remove bet from list
 function removeBet(button, number) {
