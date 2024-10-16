@@ -109,23 +109,6 @@
     border-radius: 5px; /* มุมโค้งมน */
     display: inline-block; /* ทำให้ข้อความอยู่ในบล็อก */
 }
-/* สำหรับตารางใน รายการบิลล่าสุด 15 รายการ */
-#Bill15 {
-    border: 1px solid white;
-    background-color: white;
-}
-
-#Bill15 th {
-    background-color: white;
-    font-weight: bold;
-    text-align: center;
-}
-
-#Bill15 td {
-    text-align: center;
-    background-color: white;
-}
-
 
     /* Customize specific elements as needed */
 </style>
@@ -382,46 +365,43 @@
                     </div>
                     
 <!-- Bet History -->
-<div class="bet-history mb-3">
-    <h5>รายการบิลล่าสุด 15 รายการ</h5>
-    <table id="Bill15" class="table table-sm">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>สินค้า</th>
-                <th>ยอด</th>
-                <th>หมายเหตุ</th>
-                <th>อื่น ๆ</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>สองตัวบน</td>
-                <td>55</td>
-                <td>หมายเหตุ</td>
-                <td>...</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-
-
-                    <!-- Closed Numbers -->
-                    <div class="bet-close-number">
-                        <h5>รายการเลขปิดรับ</h5>
-                        <ul>
-                            <li>สองตัวบน: </li>
-                            <li>สองตัวล่าง: </li>
-                            <li>สามตัวบน: </li>
-                            <!-- Repeat as needed -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="col-md-4">
+    <!-- Bet History -->
+    <div class="bet-history mb-3">
+        <h5>รายการบิลล่าสุด 15 รายการ</h5>
+        <table id="Bill15" class="table-bill-history">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>สินค้า</th>
+                    <th>ยอด</th>
+                    <th>หมายเหตุ</th>
+                    <th>อื่น ๆ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>สองตัวบน</td>
+                    <td>55</td>
+                    <td>หมายเหตุ</td>
+                    <td>...</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
+    <!-- Closed Numbers -->
+    <div class="bet-close-number">
+        <h5>รายการเลขปิดรับ</h5>
+        <ul>
+            <li>สองตัวบน: </li>
+            <li>สองตัวล่าง: </li>
+            <li>สามตัวบน: </li>
+            <!-- Repeat as needed -->
+        </ul>
+    </div>
+</div>
 </div>
 
 <script>
