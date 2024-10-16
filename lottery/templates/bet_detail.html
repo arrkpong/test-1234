@@ -291,7 +291,7 @@
                                         <!-- Rows will be populated dynamically -->
                                     </tbody>
                                 </table>
-                                <table class="table">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -949,55 +949,59 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
         } else if (betsNumber.length === 3) {
             // 3 ตัวบน
             if (betTopValue > 0) {
-                const topRow = document.createElement('tr');
-                topRow.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${betsNumber}</td>
-                    <td>${betBottomValue}</td>
-                    <td>${rate3Digits}</td> <!-- เรทสำหรับ 3 ตัวบน -->
-                    <td>${betTopValue * rate3Digits}</td> <!-- รางวัล -->
-                `;
-                betListTableThird.appendChild(topRow); // Append to "3 บน"
-            }
+            const topRow = document.createElement('tr');
+            topRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${betsNumber}</td> <!-- This is where the bet number should appear -->
+                <td>${betTopValue}</td> <!-- Use betTopValue here instead of betBottomValue -->
+                <td>${rate3Digits}</td> <!-- เรทสำหรับ 3 ตัวบน -->
+                <td>${betTopValue * rate3Digits}</td> <!-- รางวัล -->
+            `;
+            betListTableThird.appendChild(topRow); // Append to "3 บน"
+        }
+
 
             // โต๊ด
             if (betTodValue > 0) {
-                const todRow = document.createElement('tr');
-                todRow.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>โต๊ด</td> <!-- ประเภทการแทง -->
-                    <td>${betsNumber}</td>
-                    <td>${rateTod}</td> <!-- เรทสำหรับโต๊ด -->
-                    <td>${betTodValue * rateTod}</td> <!-- รางวัลสำหรับโต๊ด -->
-                `;
-                betListTableTod.appendChild(todRow); // Append to "โต๊ด"
-            }
+            const todRow = document.createElement('tr');
+            todRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${betsNumber}</td> <!-- Display bet number here -->
+                <td>${betTodValue}</td>
+                <td>${rateTod}</td> <!-- เรทสำหรับโต๊ด -->
+                <td>${betTodValue * rateTod}</td> <!-- รางวัลสำหรับโต๊ด -->
+            `;
+            betListTableTod.appendChild(todRow); // Append to "โต๊ด"
+        }
+
         } else if (betsNumber.length === 1) {
             // วิ่งบน
             if (betTopValue > 0) {
-                const runTopRow = document.createElement('tr');
-                runTopRow.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>วิ่งบน</td> <!-- ประเภทการแทง -->
-                    <td>${betsNumber}</td>
-                    <td>${rateRunTop}</td> <!-- เรทสำหรับวิ่งบน -->
-                    <td>${betTopValue * rateRunTop}</td> <!-- รางวัล -->
-                `;
-                betListTableRunTop.appendChild(runTopRow); // Append to "วิ่งบน"
-            }
+            const runTopRow = document.createElement('tr');
+            runTopRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${betsNumber}</td> <!-- Display bet number here -->
+                <td>${betTopValue}</td>
+                <td>${rateRunTop}</td> <!-- เรทสำหรับวิ่งบน -->
+                <td>${betTopValue * rateRunTop}</td> <!-- รางวัล -->
+            `;
+            betListTableRunTop.appendChild(runTopRow); // Append to "วิ่งบน"
+        }
+
 
             // วิ่งล่าง
             if (betBottomValue > 0) {
-                const runBottomRow = document.createElement('tr');
-                runBottomRow.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>วิ่งล่าง</td> <!-- ประเภทการแทง -->
-                    <td>${betsNumber}</td>
-                    <td>${rateRunBottom}</td> <!-- เรทสำหรับวิ่งล่าง -->
-                    <td>${betBottomValue * rateRunBottom}</td> <!-- รางวัล -->
-                `;
-                betListTableRunBottom.appendChild(runBottomRow); // Append to "วิ่งล่าง"
-            }
+            const runBottomRow = document.createElement('tr');
+            runBottomRow.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${betsNumber}</td> <!-- Display bet number here -->
+                <td>${betBottomValue}</td>
+                <td>${rateRunBottom}</td> <!-- เรทสำหรับวิ่งล่าง -->
+                <td>${betBottomValue * rateRunBottom}</td> <!-- รางวัล -->
+            `;
+            betListTableRunBottom.appendChild(runBottomRow); // Append to "วิ่งล่าง"
+        }
+
         }
 
         totalAmount += rewardTop + rewardBottom + (betTopValue * rate3Digits) + (betTodValue * rateTod) + (betTopValue * rateRunTop) + (betBottomValue * rateRunBottom); // Calculate total
