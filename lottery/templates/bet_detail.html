@@ -67,6 +67,49 @@
     #triple-number-btn {
     display: none;
     }
+    /* เพิ่มในไฟล์ CSS ของคุณ */
+    #confirmBetModal .modal-body {
+    max-height: 500px; /* กำหนดความสูงสูงสุด */
+    overflow-y: auto; /* เพิ่ม scroll เมื่อข้อมูลเกิน */
+    }
+    /* เพิ่มกรอบให้กับตาราง */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .table th, .table td {
+    border: 1px solid rgba(128, 128, 128, 0.3); /* ใช้สีเทาที่เบาลงและปรับความเข้ม */
+    padding: 8px;
+    text-align: center;
+    }
+
+
+    /* เพิ่มสีฟ้าให้กับตัวเลขในชุดของคอลัมน์ที่สอง */
+    .table tbody tr td:nth-child(2) {
+        background-color: rgb(24, 100, 171); /* สีฟ้าสำหรับคอลัมน์ที่สอง */
+        color: white; /* สีตัวอักษรขาว */
+    }
+    
+    #total-amount-container {
+    background-color: #28D79A; /* สีเขียวอ่อน */
+    color: white; /* สีตัวอักษรขาว */
+    font-weight: bold; /* ทำให้ตัวอักษรหนาขึ้น */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+    padding: 10px 0; /* เพิ่มระยะห่างภายใน */
+    border-radius: 8px; /* เพิ่มความโค้งมนให้กับขอบ */
+}
+
+#total-amount-popup {
+    font-size: 24px; /* ขนาดตัวอักษรใหญ่ขึ้น */
+    background-color: #007bff; /* สีฟ้าของพื้นหลัง */
+    padding: 10px;
+    color: white; /* สีตัวอักษรขาว */
+    font-weight: bold; /* ตัวอักษรหนา */
+    border-radius: 5px; /* มุมโค้งมน */
+    display: inline-block; /* ทำให้ข้อความอยู่ในบล็อก */
+}
+
 
     /* Customize specific elements as needed */
 </style>
@@ -291,7 +334,7 @@
                                         <!-- Rows will be populated dynamically -->
                                     </tbody>
                                 </table>
-                                <table class="table table-bordered">
+                                <table class="table">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -306,9 +349,9 @@
                                     </tbody>
                                 </table>
                                 <hr />
-                                <div class="d-flex justify-content-between">
+                                <div id="total-amount-container">
                                     <span>ยอดแทงรวม</span>
-                                    <span id="total-amount-popup"></span>
+                                    <span id="total-amount-popup">0฿</span>
                                 </div>
                             </div>
                     
@@ -921,129 +964,131 @@ function addTripleNumbers() {
 
 // table dialog
 document.getElementById('sendBetButton').addEventListener('click', function() {
-    // Get the bet list data from your existing bet list
-    const betList = document.querySelectorAll('.bet-item'); // Assuming each bet entry has a class .bet-item
+    const betList = document.querySelectorAll('.bet-item'); 
     const betListTable = document.getElementById('betListTable'); 
     const betListTableBottom = document.getElementById('betListTableBottom');
     const betListTableThird = document.getElementById('betListTableThird'); 
     const betListTableTod = document.getElementById('betListTableTod'); 
-    const betListTableRunTop = document.getElementById('betListTableRunTop'); // Add for วิ่งบน
-    const betListTableRunBottom = document.getElementById('betListTableRunBottom'); // Add for วิ่งล่าง
+    const betListTableRunTop = document.getElementById('betListTableRunTop'); 
+    const betListTableRunBottom = document.getElementById('betListTableRunBottom'); 
 
     // Clear the previous data from the table
     betListTable.innerHTML = '';
     betListTableBottom.innerHTML = '';
-    betListTableThird.innerHTML = ''; // Clear for 3 ตัวบน
-    betListTableTod.innerHTML = ''; // Clear for โต๊ด
-    betListTableRunTop.innerHTML = ''; // Clear for วิ่งบน
-    betListTableRunBottom.innerHTML = ''; // Clear for วิ่งล่าง
+    betListTableThird.innerHTML = ''; 
+    betListTableTod.innerHTML = ''; 
+    betListTableRunTop.innerHTML = ''; 
+    betListTableRunBottom.innerHTML = ''; 
 
-    let totalAmount = 0;
+    let totalAmount = 0; // ตัวแปรสำหรับเก็บยอดรวม
 
-    // Iterate over the bet list and process each bet
-    betList.forEach((betItem, index) => {
-        const betDescription = betItem.querySelector('span').innerText; // Get the description
-        const betsNumber = betItem.querySelectorAll('span')[1].innerText; // Assuming the bet number is in the second span
+    let rowIndex = 1; // ใช้สำหรับลำดับบรรทัดใน popup
 
+    // วนลูปในรายการ Bet list
+    betList.forEach((betItem) => {
+        const betDescription = betItem.querySelector('span').innerText; 
+        const betsNumbers = betItem.querySelectorAll('span')[1].innerText.split(','); 
+        
         const betTopValue = parseFloat(betItem.dataset.betTop) || 0;
         const betBottomValue = parseFloat(betItem.dataset.betBottom) || 0;
         const betTodValue = parseFloat(betItem.dataset.betTod) || 0;
 
-        const rate2Digits = 100; // Fixed rate for 2 ตัว
-        const rate3Digits = 800; // Fixed rate for 3 ตัวบน
-        const rateTod = 120; // Fixed rate for โต๊ด
-        const rateRunTop = 3; // Fixed rate for วิ่งบน
-        const rateRunBottom = 4; // Fixed rate for วิ่งล่าง
-        let rewardTop = betTopValue * rate2Digits;
-        let rewardBottom = betBottomValue * rate2Digits;
+        // คำนวณยอดรวมจาก Bet list ทุกค่า
+        totalAmount += (betTopValue + betBottomValue + betTodValue) * betsNumbers.length; // คำนวณยอดรวมจากทุกหมายเลขใน Bet list
 
-        // Detect bet type and categorize into columns
-        if (betsNumber.length === 2) {
-            // 2 ตัว
-            if (betTopValue > 0) {
-                const topRow = document.createElement('tr');
-                topRow.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${betsNumber}</td>
-                    <td>${betTopValue}</td>
-                    <td>${rate2Digits}</td> <!-- เรท -->
-                    <td>${rewardTop}</td> <!-- รางวัล -->
-                `;
-                betListTable.appendChild(topRow); // Append to "2 บน"
+        const rate2Digits = 100; 
+        const rate3Digits = 800; 
+        const rateTod = 120; 
+        const rateRunTop = 3; 
+        const rateRunBottom = 4; 
+
+        // Iterate over each number if there are multiple numbers
+        betsNumbers.forEach((betsNumber) => {
+            betsNumber = betsNumber.trim(); 
+
+            if (betsNumber.length === 2) {
+                if (betTopValue > 0) {
+                    const topRow = document.createElement('tr');
+                    topRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${betsNumber}</td>
+                        <td>${betTopValue}</td>
+                        <td>${rate2Digits}</td>
+                        <td>${betTopValue * rate2Digits}</td>
+                    `;
+                    betListTable.appendChild(topRow); 
+                }
+
+                if (betBottomValue > 0) {
+                    const bottomRow = document.createElement('tr');
+                    bottomRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${betsNumber}</td>
+                        <td>${betBottomValue}</td>
+                        <td>${rate2Digits}</td>
+                        <td>${betBottomValue * rate2Digits}</td>
+                    `;
+                    betListTableBottom.appendChild(bottomRow); 
+                }
             }
-            if (betBottomValue > 0) {
-                const bottomRow = document.createElement('tr');
-                bottomRow.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${betsNumber}</td>
-                    <td>${betBottomValue}</td>
-                    <td>${rate2Digits}</td>
-                    <td>${rewardBottom}</td>
-                `;
-                betListTableBottom.appendChild(bottomRow); // Append to "2 ล่าง"
+
+            if (betsNumber.length === 3) {
+                if (betTopValue > 0) {
+                    const topRow = document.createElement('tr');
+                    topRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${betsNumber}</td>
+                        <td>${betTopValue}</td>
+                        <td>${rate3Digits}</td>
+                        <td>${betTopValue * rate3Digits}</td>
+                    `;
+                    betListTableThird.appendChild(topRow); 
+                }
+
+                if (betTodValue > 0) {
+                    const todRow = document.createElement('tr');
+                    todRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${betsNumber}</td>
+                        <td>${betTodValue}</td>
+                        <td>${rateTod}</td>
+                        <td>${betTodValue * rateTod}</td>
+                    `;
+                    betListTableTod.appendChild(todRow); 
+                }
             }
-        } else if (betsNumber.length === 3) {
-            // 3 ตัวบน
-            if (betTopValue > 0) {
-            const topRow = document.createElement('tr');
-            topRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${betsNumber}</td> <!-- This is where the bet number should appear -->
-                <td>${betTopValue}</td> <!-- Use betTopValue here instead of betBottomValue -->
-                <td>${rate3Digits}</td> <!-- เรทสำหรับ 3 ตัวบน -->
-                <td>${betTopValue * rate3Digits}</td> <!-- รางวัล -->
-            `;
-            betListTableThird.appendChild(topRow); // Append to "3 บน"
-        }
 
+            if (betsNumber.length === 1) {
+                if (betTopValue > 0) {
+                    const runTopRow = document.createElement('tr');
+                    runTopRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${betsNumber}</td>
+                        <td>${betTopValue}</td>
+                        <td>${rateRunTop}</td>
+                        <td>${betTopValue * rateRunTop}</td>
+                    `;
+                    betListTableRunTop.appendChild(runTopRow); 
+                }
 
-            // โต๊ด
-            if (betTodValue > 0) {
-            const todRow = document.createElement('tr');
-            todRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${betsNumber}</td> <!-- Display bet number here -->
-                <td>${betTodValue}</td>
-                <td>${rateTod}</td> <!-- เรทสำหรับโต๊ด -->
-                <td>${betTodValue * rateTod}</td> <!-- รางวัลสำหรับโต๊ด -->
-            `;
-            betListTableTod.appendChild(todRow); // Append to "โต๊ด"
-        }
+                if (betBottomValue > 0) {
+                    const runBottomRow = document.createElement('tr');
+                    runBottomRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${betsNumber}</td>
+                        <td>${betBottomValue}</td>
+                        <td>${rateRunBottom}</td>
+                        <td>${betBottomValue * rateRunBottom}</td>
+                    `;
+                    betListTableRunBottom.appendChild(runBottomRow); 
+                }
+            }
 
-        } else if (betsNumber.length === 1) {
-            // วิ่งบน
-            if (betTopValue > 0) {
-            const runTopRow = document.createElement('tr');
-            runTopRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${betsNumber}</td> <!-- Display bet number here -->
-                <td>${betTopValue}</td>
-                <td>${rateRunTop}</td> <!-- เรทสำหรับวิ่งบน -->
-                <td>${betTopValue * rateRunTop}</td> <!-- รางวัล -->
-            `;
-            betListTableRunTop.appendChild(runTopRow); // Append to "วิ่งบน"
-        }
-
-
-            // วิ่งล่าง
-            if (betBottomValue > 0) {
-            const runBottomRow = document.createElement('tr');
-            runBottomRow.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${betsNumber}</td> <!-- Display bet number here -->
-                <td>${betBottomValue}</td>
-                <td>${rateRunBottom}</td> <!-- เรทสำหรับวิ่งล่าง -->
-                <td>${betBottomValue * rateRunBottom}</td> <!-- รางวัล -->
-            `;
-            betListTableRunBottom.appendChild(runBottomRow); // Append to "วิ่งล่าง"
-        }
-
-        }
-
-        totalAmount += rewardTop + rewardBottom + (betTopValue * rate3Digits) + (betTodValue * rateTod) + (betTopValue * rateRunTop) + (betBottomValue * rateRunBottom); // Calculate total
+            rowIndex++; // เพิ่มลำดับหมายเลขบรรทัด
+        });
     });
 
-    // Set the total amount and show the modal
+    // แสดงยอดรวมใน popup
     document.getElementById('total-amount-popup').textContent = `${totalAmount}฿`;
 
     var myModal = new bootstrap.Modal(document.getElementById('confirmBetModal'), {
@@ -1051,6 +1096,8 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
     });
     myModal.show();
 });
+
+
 
 </script>
 {% endblock %}
