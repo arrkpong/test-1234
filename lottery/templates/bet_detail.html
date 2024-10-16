@@ -689,22 +689,42 @@ function addBetToList(number) {
 
 // ฟังก์ชันสำหรับการกลับเลขและเพิ่มเข้าไปในรายการ
 function reverseBets() {
-    // Create a list of reversed numbers for all bets and add them to the list
-    let reversedBets = betsNumber.map(number => {
+    // เก็บรายการเลขกลับเป็นแยกรายการแต่ละเลข
+    betsNumber.forEach(number => {
         if (number.length === 2) {
-            return number.split('').reverse().join(''); // Reverse the digits
-        }
-        return null; // ถ้าไม่ใช่เลขสองตัว ไม่ต้องทำการสลับ
-    }).filter(Boolean); // Filter out null values (those that were not reversed)
-
-    // เพิ่มเลขกลับเข้าไปในรายการ
-    reversedBets.forEach(number => {
-        // ตรวจสอบว่าเลขที่กลับแล้วไม่ได้อยู่ในรายการ
-        if (!betsNumber.includes(number)) {
-            addBetToList(number); // Add the reversed bet to the list
+            let reversed = number.split('').reverse().join(''); // กลับเลขสองตัว
+            if (!betsNumber.includes(reversed)) {
+                addBetToList(reversed); // เพิ่มเลขกลับไปในรายการถ้าไม่มี
+            }
+        } else if (number.length === 3) {
+            let tripletReversed = generateReversedTriplets(number); // เรียกฟังก์ชันกลับเลขสามตัว
+            tripletReversed.forEach(reversed => {
+                if (!betsNumber.includes(reversed)) {
+                    addBetToList(reversed); // เพิ่มแต่ละเลขกลับไปในรายการ
+                }
+            });
         }
     });
 }
+
+// ฟังก์ชันสำหรับกลับเลขสามตัวที่มีเลขซ้ำ
+function generateReversedTriplets(number) {
+    let [a, b, c] = number.split(''); // แยกเลขทั้งสามตัว
+    let results = new Set(); // ใช้ Set เพื่อไม่ให้มีค่าซ้ำกัน
+
+    // สร้างค่าผสมที่เป็นไปได้
+    results.add(`${a}${b}${c}`);
+    results.add(`${a}${c}${b}`);
+    results.add(`${b}${a}${c}`);
+    results.add(`${b}${c}${a}`);
+    results.add(`${c}${a}${b}`);
+    results.add(`${c}${b}${a}`);
+
+    // กรองค่าซ้ำแล้วคืนค่าเป็น Array
+    return [...results];
+}
+
+
 
 // Remove bet from list
 function removeBet(button, number) {
@@ -836,30 +856,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.getElementById('bet-number').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        event.preventDefault(); // ป้องกันการทำงานปกติของ Enter
-        document.getElementById('bet-top').focus(); // โฟกัสไปที่ช่อง "บน"
+        event.preventDefault(); // Prevent default Enter behavior
+        document.getElementById('bet-top').focus(); // Focus on the next field
     }
 
-    // เพิ่มการกด Spacebar เพื่อกลับเลข
-    if (event.key === ' ') { // ตรวจจับการกดปุ่ม Spacebar
-        event.preventDefault(); // ป้องกันการทำงานปกติของ Spacebar เช่น เลื่อนหน้าเว็บ
-        reverseBets(); // เรียกใช้ฟังก์ชันกลับเลข
+    // Add Spacebar for reversing the number
+    if (event.key === ' ') { // Detect the Spacebar key press
+        event.preventDefault(); // Prevent default Spacebar action
+        reverseBets(); // Call the reverse function
     }
 });
 
-    document.getElementById('bet-top').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // ป้องกันการทำงานปกติของ Enter
-            document.getElementById('bet-bottom').focus(); // โฟกัสไปที่ช่อง "ล่าง"
+document.getElementById('bet-top').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent default Enter behavior
+
+        // Check if the 'สามตัว' option is selected and if the BetTod field is present
+        const betTodInput = document.getElementById('bet-tod');
+        if (betTodInput && betTodInput.style.display !== 'none') {
+            betTodInput.focus(); // Focus on BetTod if available
+        } else {
+            document.getElementById('bet-bottom').focus(); // Otherwise, go to BetBottom
         }
+    }
 });
 
-    document.getElementById('bet-bottom').addEventListener('keydown', function(event) {
+document.getElementById('bet-bottom').addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // ป้องกันการทำงานปกติของ Enter
             document.querySelector('button[onclick="addBet()"]').click(); // คลิกปุ่ม "เพิ่ม +"
         }
 });
+document.getElementById('bet-tod').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent default Enter behavior
+        document.querySelector('button[onclick="addBet()"]').click(); // Trigger the "Add +" button
+    }
+});
+
 
 // ฟังก์ชันสำหรับเพิ่มเลขเบิ้ลเข้าไปในรายการ
 function addDoubleNumbers() {
