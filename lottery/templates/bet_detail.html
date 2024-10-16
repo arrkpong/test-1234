@@ -90,24 +90,30 @@
         background-color: rgb(24, 100, 171); /* สีฟ้าสำหรับคอลัมน์ที่สอง */
         color: white; /* สีตัวอักษรขาว */
     }
-    
-    #total-amount-container {
-    background-color: #28D79A; /* สีเขียวอ่อน */
+    #total-amount-label {
+    background-color: rgb(56, 217, 169); /* สีเขียวที่ต้องการ */
+    color: white; /* สีตัวอักษรขาว */
+    padding: 2px 20px; /* เพิ่มระยะห่างภายใน */
+    border-radius: 5px; /* ทำให้มุมโค้งมน */
+    font-size: 14px; /* ปรับขนาดตัวอักษร */
+    width: 97%;
+}
+#total-amount-container {
+    width: 100%;
+    background-color: rgb(34, 139, 230); /* สีพื้นหลังน้ำเงิน */
     color: white; /* สีตัวอักษรขาว */
     font-weight: bold; /* ทำให้ตัวอักษรหนาขึ้น */
     text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
-    padding: 10px 0; /* เพิ่มระยะห่างภายใน */
-    border-radius: 8px; /* เพิ่มความโค้งมนให้กับขอบ */
+    padding: 5px 0; /* เพิ่มระยะห่างภายใน */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #total-amount-popup {
-    font-size: 24px; /* ขนาดตัวอักษรใหญ่ขึ้น */
-    background-color: #007bff; /* สีฟ้าของพื้นหลัง */
-    padding: 10px;
+    font-size: 14px; /* ขนาดตัวอักษรใหญ่ขึ้น */
+    padding: 1px;
     color: white; /* สีตัวอักษรขาว */
-    font-weight: bold; /* ตัวอักษรหนา */
-    border-radius: 5px; /* มุมโค้งมน */
-    display: inline-block; /* ทำให้ข้อความอยู่ในบล็อก */
 }
 
     /* Customize specific elements as needed */
@@ -353,10 +359,11 @@
                                 <!-- Modal Footer -->
                                 <div class="modal-footer">
                                     <div id="total-amount-container">
-                                        <span>ยอดแทงรวม</span>
-                                        <span id="total-amount-popup">0฿</span>
-                                    </div>
-                                    <textarea class="form-control" id="note" rows="2" placeholder="Note"></textarea>
+                                        <div id="total-amount-label">ยอดแทงรวม</div>
+                                        <span id="total-amount-popup">10฿</span>
+                                        </div>                                                                      
+                                        <!-- Note ใน Popup -->
+                                    <textarea id="note-popup" class="form-control" rows="2" placeholder="Note"></textarea>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ย้อนกลับ</button>
                                     <button type="button" class="btn btn-success">ยืนยันการส่งโพย</button>
                                 </div>
@@ -892,6 +899,7 @@ document.addEventListener('DOMContentLoaded', function() {
         betTopElement.style.width = '200px'; // ขนาดเดิม
     }
 });
+
 
 document.getElementById('bet-number').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
