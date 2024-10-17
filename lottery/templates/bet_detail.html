@@ -102,7 +102,6 @@
     width: 100%;
     background-color: rgb(34, 139, 230); /* สีพื้นหลังน้ำเงิน */
     color: white; /* สีตัวอักษรขาว */
-    font-weight: bold; /* ทำให้ตัวอักษรหนาขึ้น */
     text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
     padding: 5px 0; /* เพิ่มระยะห่างภายใน */
     display: flex;
@@ -111,10 +110,12 @@
 }
 
 #total-amount-popup {
-    font-size: 14px; /* ขนาดตัวอักษรใหญ่ขึ้น */
+    font-size: 20px; /* ขนาดตัวอักษรใหญ่ขึ้น */
     padding: 1px;
     color: white; /* สีตัวอักษรขาว */
 }
+
+
 
     /* Customize specific elements as needed */
 </style>
@@ -243,7 +244,9 @@
                         <label for="note" class="form-label">note</label>
                         <span class="text-danger" style="font-size: 14px;">เวลาที่เหลือ <span>21:41</span></span> <!--ยังไม่ได้ทำ-->
                     </div>
-                    <textarea id="note" class="form-control mb-3" style="height: 50px;"></textarea>
+                    <!-- Note Section -->
+                    <textarea id="note" class="form-control mb-3" style="height: 20px; overflow-y: hidden; resize: none;"></textarea>
+
                     
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-center">
@@ -268,105 +271,113 @@
                                 </div>
                     
                                 <!-- Modal Body -->
-                            <div class="modal-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th></th>
-                                            <th>2 บน</th>
-                                            <th>เรท</th>
-                                            <th>รางวัล</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="betListTable">
-                                        <!-- Rows will be populated dynamically -->
-                                    </tbody>
-                                </table>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th></th>
-                                            <th>2 ล่าง</th>
-                                            <th>เรท</th>
-                                            <th>รางวัล</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="betListTableBottom">                                   
-                                        <!-- Rows will be populated dynamically -->
-                                    </tbody>
-                                </table>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th></th>
-                                            <th>3 บน</th>
-                                            <th>เรท</th>
-                                            <th>รางวัล</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="betListTableThird">                                   
-                                        <!-- Rows will be populated dynamically -->
-                                    </tbody>
+                                <div class="modal-body">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th></th>
-                                                <th>โต๊ด</th>
-                                                <th>เรท</th>
-                                                <th>รางวัล</th>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 10%;"></th>
+                                                <th style="width: 30%;">2 บน</th>
+                                                <th style="width: 10%;">เรท</th>
+                                                <th style="width: 30%;">รางวัล</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="betListTableTod">                                  
+                                        <tbody id="betListTable">
                                             <!-- Rows will be populated dynamically -->
                                         </tbody>
                                     </table>
-                                </table>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th></th>
-                                            <th>วิ่งบน</th>
-                                            <th>เรท</th>
-                                            <th>รางวัล</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="betListTableRunTop">                                   
-                                        <!-- Rows will be populated dynamically -->
-                                    </tbody>
-                                </table>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th></th>
-                                            <th>วิ่งล่าง</th>
-                                            <th>เรท</th>
-                                            <th>รางวัล</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="betListTableRunBottom">                                   
-                                        <!-- Rows will be populated dynamically -->
-                                    </tbody>
-                                </table>
-                                <hr />                               
-                            </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 10%;"></th>
+                                                <th style="width: 30%;">2 ล่าง</th>
+                                                <th style="width: 10%;">เรท</th>
+                                                <th style="width: 30%;">รางวัล</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="betListTableBottom">
+                                            <!-- Rows will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 10%;"></th>
+                                                <th style="width: 30%;">3 บน</th>
+                                                <th style="width: 10%;">เรท</th>
+                                                <th style="width: 30%;">รางวัล</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="betListTableThird">
+                                            <!-- Rows will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 10%;"></th>
+                                                <th style="width: 30%;">โต๊ด</th>
+                                                <th style="width: 10%;">เรท</th>
+                                                <th style="width: 30%;">รางวัล</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="betListTableTod">
+                                            <!-- Rows will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 10%;"></th>
+                                                <th style="width: 30%;">วิ่งบน</th>
+                                                <th style="width: 10%;">เรท</th>
+                                                <th style="width: 30%;">รางวัล</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="betListTableRunTop">
+                                            <!-- Rows will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 10%;"></th>
+                                                <th style="width: 30%;">วิ่งล่าง</th>
+                                                <th style="width: 10%;">เรท</th>
+                                                <th style="width: 30%;">รางวัล</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="betListTableRunBottom">
+                                            <!-- Rows will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
                     
                                 <!-- Modal Footer -->
-                                <div class="modal-footer">
-                                    <div id="total-amount-container">
-                                        <div id="total-amount-label">ยอดแทงรวม</div>
-                                        <span id="total-amount-popup">10฿</span>
-                                        </div>                                                                      
-                                        <!-- Note ใน Popup -->
-                                    <textarea id="note-popup" class="form-control" rows="2" placeholder="Note"></textarea>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ย้อนกลับ</button>
+                            <div class="modal-footer d-flex flex-column align-items-center">
+                                <div id="total-amount-container" class="mb-3 text-center">
+                                    <div id="total-amount-label">ยอดแทงรวม</div>
+                                    <span id="total-amount-popup">0฿</span>
+                                </div>
+
+                                <!-- Note Section -->
+                                <div class="w-100">
+                                    <label for="note-popup" class="form-label">Note</label>
+                                    <textarea id="note-popup" class="form-control" rows="2" style="height: 5px; width: 100%; resize: none; border-radius: 0;background-color: rgba(239, 239, 240, 0.7);"></textarea>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="d-flex justify-content-end w-100 mt-3">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 10px;">ย้อนกลับ</button>
                                     <button type="button" class="btn btn-success">ยืนยันการส่งโพย</button>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -973,7 +984,7 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
     const betListTableTod = document.getElementById('betListTableTod'); 
     const betListTableRunTop = document.getElementById('betListTableRunTop'); 
     const betListTableRunBottom = document.getElementById('betListTableRunBottom'); 
-
+    
     // Clear the previous data from the table
     betListTable.innerHTML = '';
     betListTableBottom.innerHTML = '';
@@ -982,29 +993,25 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
     betListTableRunTop.innerHTML = ''; 
     betListTableRunBottom.innerHTML = ''; 
 
-    let totalAmount = 0; // ตัวแปรสำหรับเก็บยอดรวม
+    let rowIndexTop = 1, rowIndexBottom = 1, rowIndexThird = 1, rowIndexTod = 1, rowIndexRunTop = 1, rowIndexRunBottom = 1;
 
-    let rowIndex = 1; // ใช้สำหรับลำดับบรรทัดใน popup
+    // Hide all tables initially
+    document.querySelectorAll('.table').forEach(table => table.style.display = 'none');
 
-    // วนลูปในรายการ Bet list
+    // Loop through each bet item in the list and display details in the modal
     betList.forEach((betItem) => {
         const betDescription = betItem.querySelector('span').innerText; 
         const betsNumbers = betItem.querySelectorAll('span')[1].innerText.split(','); 
-        
         const betTopValue = parseFloat(betItem.dataset.betTop) || 0;
         const betBottomValue = parseFloat(betItem.dataset.betBottom) || 0;
         const betTodValue = parseFloat(betItem.dataset.betTod) || 0;
-
-        // คำนวณยอดรวมจาก Bet list ทุกค่า
-        totalAmount += (betTopValue + betBottomValue + betTodValue) * betsNumbers.length; // คำนวณยอดรวมจากทุกหมายเลขใน Bet list
 
         const rate2Digits = 100; 
         const rate3Digits = 800; 
         const rateTod = 120; 
         const rateRunTop = 3; 
-        const rateRunBottom = 4; 
+        const rateRunBottom = 4;
 
-        // Iterate over each number if there are multiple numbers
         betsNumbers.forEach((betsNumber) => {
             betsNumber = betsNumber.trim(); 
 
@@ -1012,25 +1019,29 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
                 if (betTopValue > 0) {
                     const topRow = document.createElement('tr');
                     topRow.innerHTML = `
-                        <td>${rowIndex}</td>
+                        <td>${rowIndexTop}</td>
                         <td>${betsNumber}</td>
                         <td>${betTopValue}</td>
                         <td>${rate2Digits}</td>
                         <td>${betTopValue * rate2Digits}</td>
                     `;
                     betListTable.appendChild(topRow); 
+                    document.getElementById('betListTable').parentNode.style.display = 'table'; 
+                    rowIndexTop++;
                 }
 
                 if (betBottomValue > 0) {
                     const bottomRow = document.createElement('tr');
                     bottomRow.innerHTML = `
-                        <td>${rowIndex}</td>
+                        <td>${rowIndexBottom}</td>
                         <td>${betsNumber}</td>
                         <td>${betBottomValue}</td>
                         <td>${rate2Digits}</td>
                         <td>${betBottomValue * rate2Digits}</td>
                     `;
                     betListTableBottom.appendChild(bottomRow); 
+                    document.getElementById('betListTableBottom').parentNode.style.display = 'table'; 
+                    rowIndexBottom++;
                 }
             }
 
@@ -1038,25 +1049,29 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
                 if (betTopValue > 0) {
                     const topRow = document.createElement('tr');
                     topRow.innerHTML = `
-                        <td>${rowIndex}</td>
+                        <td>${rowIndexThird}</td>
                         <td>${betsNumber}</td>
                         <td>${betTopValue}</td>
                         <td>${rate3Digits}</td>
                         <td>${betTopValue * rate3Digits}</td>
                     `;
                     betListTableThird.appendChild(topRow); 
+                    document.getElementById('betListTableThird').parentNode.style.display = 'table'; 
+                    rowIndexThird++;
                 }
 
                 if (betTodValue > 0) {
                     const todRow = document.createElement('tr');
                     todRow.innerHTML = `
-                        <td>${rowIndex}</td>
+                        <td>${rowIndexTod}</td>
                         <td>${betsNumber}</td>
                         <td>${betTodValue}</td>
                         <td>${rateTod}</td>
                         <td>${betTodValue * rateTod}</td>
                     `;
                     betListTableTod.appendChild(todRow); 
+                    document.getElementById('betListTableTod').parentNode.style.display = 'table'; 
+                    rowIndexTod++;
                 }
             }
 
@@ -1064,34 +1079,43 @@ document.getElementById('sendBetButton').addEventListener('click', function() {
                 if (betTopValue > 0) {
                     const runTopRow = document.createElement('tr');
                     runTopRow.innerHTML = `
-                        <td>${rowIndex}</td>
+                        <td>${rowIndexRunTop}</td>
                         <td>${betsNumber}</td>
                         <td>${betTopValue}</td>
                         <td>${rateRunTop}</td>
                         <td>${betTopValue * rateRunTop}</td>
                     `;
                     betListTableRunTop.appendChild(runTopRow); 
+                    document.getElementById('betListTableRunTop').parentNode.style.display = 'table'; 
+                    rowIndexRunTop++;
                 }
 
                 if (betBottomValue > 0) {
                     const runBottomRow = document.createElement('tr');
                     runBottomRow.innerHTML = `
-                        <td>${rowIndex}</td>
+                        <td>${rowIndexRunBottom}</td>
                         <td>${betsNumber}</td>
                         <td>${betBottomValue}</td>
                         <td>${rateRunBottom}</td>
                         <td>${betBottomValue * rateRunBottom}</td>
                     `;
                     betListTableRunBottom.appendChild(runBottomRow); 
+                    document.getElementById('betListTableRunBottom').parentNode.style.display = 'table'; 
+                    rowIndexRunBottom++;
                 }
             }
-
-            rowIndex++; // เพิ่มลำดับหมายเลขบรรทัด
         });
     });
 
-    // แสดงยอดรวมใน popup
-    document.getElementById('total-amount-popup').textContent = `${totalAmount}฿`;
+    // Get totalAmount from Betlist and display it in the popup
+    const totalAmountFromBetList = document.getElementById('total-amount').textContent.trim();
+    document.getElementById('total-amount-popup').textContent = totalAmountFromBetList;
+
+    // Retrieve and display note section in the popup
+    const noteValue = document.getElementById('note').value;
+    const notePopup = document.getElementById('note-popup');
+    notePopup.value = noteValue;
+    notePopup.readOnly = true; 
 
     var myModal = new bootstrap.Modal(document.getElementById('confirmBetModal'), {
         keyboard: false
