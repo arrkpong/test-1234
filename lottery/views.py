@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
-from lottery.models import Bills, Lottery, LotteryType
+from lottery.models import Bills, Lottery, LotteryType , User, Order
 from datetime import datetime
 import json
 import pytz
@@ -75,3 +75,9 @@ class IndexView(LoginRequiredMixin, View):
     
 class LotterryBills(LoginRequiredMixin, TemplateView):
     template_name = 'bills.html'
+
+# สร้างผู้ใช้
+user = User.objects.create(username='zzz')
+
+# สร้างการสั่งซื้อ
+Order.objects.create(user=user, number='55', bet_type='2 บน', bet_amount=5, reward_amount=500, total_amount=42)

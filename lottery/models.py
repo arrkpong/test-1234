@@ -43,3 +43,14 @@ class Bills(models.Model):
     class Meta:
         verbose_name = 'บิล'
         verbose_name_plural = 'บิล'
+
+class User(models.Model):
+    username = models.CharField(max_length=100)
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    number = models.CharField(max_length=10)
+    bet_type = models.CharField(max_length=20)
+    bet_amount = models.IntegerField()
+    reward_amount = models.IntegerField()
+    total_amount = models.IntegerField()
